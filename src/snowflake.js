@@ -1,7 +1,7 @@
 const Matter = require('matter-js');
 
 
-const snowflake = (x, y, airFriction, options) => {
+const snowflake = (x, y, options) => {
   const {
     Body,
     Bodies,
@@ -10,8 +10,7 @@ const snowflake = (x, y, airFriction, options) => {
 
   const snowflakeOptions = Common.extend({
     label: 'snowflake',
-    frictionAir: airFriction,
-    density: 0.001,
+    frictionAir: 0,
     collisionFilter: {
       group: Body.nextGroup(true),
     },
@@ -19,7 +18,6 @@ const snowflake = (x, y, airFriction, options) => {
       fillStyle: '#FFFFFF',
     },
   }, options);
-
   const snow = Bodies.circle(x, y, 10, snowflakeOptions);
   return snow;
 };

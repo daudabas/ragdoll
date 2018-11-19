@@ -13,6 +13,7 @@ const ragdoll = (x, y, sc, options) => {
 
   const headOptions = Common.extend({
     label: 'head',
+    mass: 0.5,
     collisionFilter: {
       group: Body.nextGroup(true),
     },
@@ -28,6 +29,7 @@ const ragdoll = (x, y, sc, options) => {
 
   const chestOptions = Common.extend({
     label: 'chest',
+    mass: 1,
     collisionFilter: {
       group: Body.nextGroup(true),
     },
@@ -105,6 +107,7 @@ const ragdoll = (x, y, sc, options) => {
   }, options);
 
   const leftLowerLegOptions = Common.extend({}, leftLegOptions, {
+    mass: 5,
     render: {
       sprite: {
         texture: './img/left_foot@2x.png',
@@ -125,6 +128,7 @@ const ragdoll = (x, y, sc, options) => {
   }, options);
 
   const rightLowerLegOptions = Common.extend({}, rightLegOptions, {
+    mass: 5,
     render: {
       sprite: {
         texture: './img/right_foot@2x.png',
@@ -474,7 +478,7 @@ const ragdoll = (x, y, sc, options) => {
       upperToLowerRightLeg, legToLeg,
     ],
   });
-
+  console.log(leftUpperLeg.mass);
   return person;
 };
 

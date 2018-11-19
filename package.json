@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "browserify": "^16.2.3",
-    "matter-js": "^0.14.2"
+    "matter-js": "^0.14.2",
+    "shake.js": "^1.2.2"
   },
   "devDependencies": {
     "eslint": "^5.9.0",
