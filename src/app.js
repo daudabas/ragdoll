@@ -2,7 +2,7 @@ const Shake = require('shake.js');
 const ElfWorld = require('./elfworld');
 
 const elfWorld = new ElfWorld();
-const shakeEvent = new Shake({ threshold: 15, timeout: 1000 });
+const shakeEvent = new Shake({ threshold: 10, timeout: 1000 });
 
 
 window.addEventListener('load', () => {

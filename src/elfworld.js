@@ -13,6 +13,7 @@ const {
   Events,
   Common,
   Composite,
+  Vector,
 } = Matter;
 
 class ElfWorld {
@@ -69,10 +70,11 @@ class ElfWorld {
     const canvasHeight = this.render.canvas.height;
     const canvasWidth = this.render.canvas.width;
 
-    const ground = Bodies.rectangle(canvasWidth / 2, canvasHeight - 60, canvasWidth, 200, { isStatic: true, render: { visible: false } });
+    const ground = Bodies.rectangle(canvasWidth / 2, canvasHeight - 45, canvasWidth, 200, { isStatic: true, render: { visible: false } });
     const leftWall = Bodies.rectangle(-100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: false } });
     const rightWall = Bodies.rectangle(canvasWidth + 100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: false } });
     const ceiling = Bodies.rectangle(canvasWidth / 2, 10 - 100, canvasWidth, 200, { isStatic: true, render: { visible: false } });
+
     this.ragdoll = Ragdoll(canvasWidth / 2, canvasHeight - 350, 1, { frictionAir: 0 });
 
     World.add(this.engine.world, [ground, leftWall, rightWall, ceiling, this.ragdoll]);
@@ -133,14 +135,16 @@ class ElfWorld {
   randomImpulse() {
     const size = this.snowflakes.length;
     for (let i = 0; i < size; i += 1) {
-      const xRandom = Math.random();
-      const yRandom = Math.random();
+      const xForce = (Math.random() - 0.5) % 0.001;
+      const yForce = Math.random() % 0.001;
       const snowFlake = this.snowflakes[i];
-      Body.applyForce(snowFlake, { x: snowFlake.x, y: snowFlake.y }, { x: (xRandom - 0.1) % 0.001, y: (-1 * yRandom * 0.1) });
+      Body.applyForce(snowFlake, Vector.create(snowFlake.x, snowFlake.y), Vector.create(xForce, yForce));
     }
-    const xRandom = Math.random();
-    const yRandom = Math.random();
-    Body.applyForce(this.ragdoll, { x: this.ragdoll.x, y: this.ragdoll.y }, { x: 0, y: -5 });
+    const chest = this.ragdoll.bodies[4];
+
+    const xForce = Math.random();
+    const yForce = Math.random();
+    Body.applyForce(chest, Vector.create(chest.x, chest.y), Vector.create(xForce, yForce));
   }
 
   init() {
