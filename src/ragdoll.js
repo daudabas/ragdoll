@@ -22,7 +22,7 @@ const ragdoll = (x, y, sc, options) => {
     },
     render: {
       sprite: {
-        texture: './img/head@2x.png',
+        texture: './images/head@2x.png',
       },
     },
   }, options);
@@ -35,7 +35,7 @@ const ragdoll = (x, y, sc, options) => {
     },
     render: {
       sprite: {
-        texture: './img/body@2x.png',
+        texture: './images/body@2x.png',
       },
     },
   }, options);
@@ -50,7 +50,7 @@ const ragdoll = (x, y, sc, options) => {
     },
     render: {
       sprite: {
-        texture: './img/left_upper_arm@2x.png',
+        texture: './images/left_upper_arm@2x.png',
       },
     },
   }, options);
@@ -62,7 +62,7 @@ const ragdoll = (x, y, sc, options) => {
   }, leftArmOptions, {
     render: {
       sprite: {
-        texture: './img/left_forearm@2x.png',
+        texture: './images/left_forearm@2x.png',
       },
     },
   });
@@ -77,7 +77,7 @@ const ragdoll = (x, y, sc, options) => {
     },
     render: {
       sprite: {
-        texture: './img/right_upper_arm@2x.png',
+        texture: './images/right_upper_arm@2x.png',
       },
     },
   }, options);
@@ -89,7 +89,7 @@ const ragdoll = (x, y, sc, options) => {
   }, rightArmOptions, {
     render: {
       sprite: {
-        texture: './img/right_forearm@2x.png',
+        texture: './images/right_forearm@2x.png',
       },
     },
   });
@@ -101,7 +101,7 @@ const ragdoll = (x, y, sc, options) => {
     },
     render: {
       sprite: {
-        texture: './img/left_thigh@2x.png',
+        texture: './images/left_thigh@2x.png',
       },
     },
   }, options);
@@ -110,7 +110,7 @@ const ragdoll = (x, y, sc, options) => {
     mass: 5,
     render: {
       sprite: {
-        texture: './img/left_foot@2x.png',
+        texture: './images/left_foot@2x.png',
       },
     },
   });
@@ -122,7 +122,7 @@ const ragdoll = (x, y, sc, options) => {
     },
     render: {
       sprite: {
-        texture: './img/right_thigh@2x.png',
+        texture: './images/right_thigh@2x.png',
       },
     },
   }, options);
@@ -131,7 +131,7 @@ const ragdoll = (x, y, sc, options) => {
     mass: 5,
     render: {
       sprite: {
-        texture: './img/right_foot@2x.png',
+        texture: './images/right_foot@2x.png',
       },
     },
   });

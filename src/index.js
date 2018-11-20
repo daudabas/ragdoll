@@ -1,3 +1,5 @@
+import './styles/style.css';
+
 const Shake = require('shake.js');
 const ElfWorld = require('./elfworld');
 
