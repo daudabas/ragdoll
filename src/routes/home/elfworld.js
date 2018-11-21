@@ -16,7 +16,7 @@ const {
   Vector,
 } = Matter;
 
-class ElfWorld {
+export default class ElfWorld {
   constructor(maxSnowflakes) {
     this.snowflakes = [];
     this.ragdoll = null;
@@ -31,17 +31,16 @@ class ElfWorld {
   }
 
   createRender() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = document.body.width;
+    const height = document.body.height;
     const { engine } = this;
+    const rootDiv = document.getElementById('root');
     this.render = Render.create({
-      element: document.body,
+      element: rootDiv,
       engine,
       options: {
         wireframes: false,
         background: 'transparent',
-        width,
-        height,
       },
     });
   }
@@ -69,15 +68,14 @@ class ElfWorld {
   loadBodies() {
     const canvasHeight = this.render.canvas.height;
     const canvasWidth = this.render.canvas.width;
-
-    const ground = Bodies.rectangle(canvasWidth / 2, canvasHeight - 45, canvasWidth, 200, { isStatic: true, render: { visible: false } });
-    const leftWall = Bodies.rectangle(-100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: false } });
-    const rightWall = Bodies.rectangle(canvasWidth + 100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: false } });
+    const ground = Bodies.rectangle(canvasWidth / 2, canvasHeight, canvasWidth, 20, { isStatic: true, render: { visible: true } });
+    const leftWall = Bodies.rectangle(-100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: true } });
+    const rightWall = Bodies.rectangle(canvasWidth + 100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: true } });
     const ceiling = Bodies.rectangle(canvasWidth / 2, 10 - 100, canvasWidth, 200, { isStatic: true, render: { visible: false } });
 
     this.ragdoll = Ragdoll(canvasWidth / 2, canvasHeight - 350, 1, { frictionAir: 0 });
 
-    World.add(this.engine.world, [ground, leftWall, rightWall, ceiling, this.ragdoll]);
+    World.add(this.engine.world, [ground, this.ragdoll]);
   }
 
   loadEvents() {
@@ -158,5 +156,3 @@ class ElfWorld {
     setInterval(this.removeSnowflake.bind(this), 10000);
   }
 }
-
-module.exports = ElfWorld;

@@ -1,6 +1,5 @@
 const Matter = require('matter-js');
 
-
 const snowflake = (x, y, options) => {
   const {
     Body,

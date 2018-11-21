@@ -1,5 +1,13 @@
 const Matter = require('matter-js');
 
+function importAll(r) {
+  let images = {};
+  r.keys().map((item, index) => {  return images[item.replace('./', '')] = r(item); });
+  return images;
+}
+
+const images = importAll(require.context('./images', false, /\.(png|jpe?g|svg)$/));
+
 const ragdoll = (x, y, sc, options) => {
   const scale = typeof sc === 'undefined' ? 1 : sc;
 
@@ -22,7 +30,9 @@ const ragdoll = (x, y, sc, options) => {
     },
     render: {
       sprite: {
-        texture: './images/head@2x.png',
+        texture: images['head@2x.png'],
+        xScale: 0.5,
+        yScale: 0.5,
       },
     },
   }, options);
@@ -35,7 +45,9 @@ const ragdoll = (x, y, sc, options) => {
     },
     render: {
       sprite: {
-        texture: './images/body@2x.png',
+        texture: images['body@2x.png'],
+        xScale: 0.5,
+        yScale: 0.5,
       },
     },
   }, options);
@@ -50,7 +62,9 @@ const ragdoll = (x, y, sc, options) => {
     },
     render: {
       sprite: {
-        texture: './images/left_upper_arm@2x.png',
+        texture: images['left_upper_arm@2x.png'],
+        xScale: 0.5,
+        yScale: 0.5,
       },
     },
   }, options);
@@ -62,7 +76,9 @@ const ragdoll = (x, y, sc, options) => {
   }, leftArmOptions, {
     render: {
       sprite: {
-        texture: './images/left_forearm@2x.png',
+        texture: images['left_forearm@2x.png'],
+        xScale: 0.5,
+        yScale: 0.5,
       },
     },
   });
@@ -77,7 +93,9 @@ const ragdoll = (x, y, sc, options) => {
     },
     render: {
       sprite: {
-        texture: './images/right_upper_arm@2x.png',
+        texture: images['right_upper_arm@2x.png'],
+        xScale: 0.5,
+        yScale: 0.5,
       },
     },
   }, options);
@@ -89,7 +107,9 @@ const ragdoll = (x, y, sc, options) => {
   }, rightArmOptions, {
     render: {
       sprite: {
-        texture: './images/right_forearm@2x.png',
+        texture: images['right_forearm@2x.png'],
+        xScale: 0.5,
+        yScale: 0.5,
       },
     },
   });
@@ -101,7 +121,9 @@ const ragdoll = (x, y, sc, options) => {
     },
     render: {
       sprite: {
-        texture: './images/left_thigh@2x.png',
+        texture: images['left_thigh@2x.png'],
+        xScale: 0.5,
+        yScale: 0.5,
       },
     },
   }, options);
@@ -110,7 +132,9 @@ const ragdoll = (x, y, sc, options) => {
     mass: 5,
     render: {
       sprite: {
-        texture: './images/left_foot@2x.png',
+        texture: images['left_foot@2x.png'],
+        xScale: 0.5,
+        yScale: 0.5,
       },
     },
   });
@@ -122,7 +146,9 @@ const ragdoll = (x, y, sc, options) => {
     },
     render: {
       sprite: {
-        texture: './images/right_thigh@2x.png',
+        texture: images['right_thigh@2x.png'],
+        xScale: 0.5,
+        yScale: 0.5,
       },
     },
   }, options);
@@ -131,70 +157,70 @@ const ragdoll = (x, y, sc, options) => {
     mass: 5,
     render: {
       sprite: {
-        texture: './images/right_foot@2x.png',
+        texture: images['right_foot@2x.png'],
       },
     },
   });
 
-  const head = Bodies.rectangle(x, y - 270 * scale, 152 * scale, 163 * scale, headOptions);
-  const chest = Bodies.rectangle(x, y, 98 * scale, 105 * scale, chestOptions);
-  const rightUpperArm = Bodies.rectangle(x + 84 * scale, y - 41 * scale, 17 * scale, 40 * scale, rightArmOptions);
-  const leftUpperArm = Bodies.rectangle(x - 84 * scale, y - 41 * scale, 17 * scale, 40 * scale, leftArmOptions);
-  const rightLowerArm = Bodies.rectangle(x + 84 * scale, y + 40 * scale, 26 * scale, 64 * scale, rightLowerArmOptions);
-  const leftLowerArm = Bodies.rectangle(x - 84 * scale, y + 40 * scale, 26 * scale, 64 * scale, leftLowerArmOptions);
-  const leftUpperLeg = Bodies.rectangle(x - 50 * scale, y + 100 * scale, 21 * scale, 32 * scale, leftLegOptions);
-  const rightUpperLeg = Bodies.rectangle(x + 50 * scale, y + 100 * scale, 21 * scale, 32 * scale, rightLegOptions);
-  const leftLowerLeg = Bodies.rectangle(x - 68 * scale, y + 170 * scale, 38 * scale, 55 * scale, leftLowerLegOptions);
-  const rightLowerLeg = Bodies.rectangle(x + 68 * scale, y + 170 * scale, 38 * scale, 55 * scale, rightLowerLegOptions);
+  const head = Bodies.rectangle((x - 5) * scale, (y - 130) * scale, 152 * scale, 163 * scale, headOptions);
+  const chest = Bodies.rectangle(x * scale, y * scale, 98 * scale, 105 * scale, chestOptions);
+  const rightUpperArm = Bodies.rectangle((x + 45) * scale, (y - 20) * scale, 17 * scale, 40 * scale, rightArmOptions);
+  const leftUpperArm = Bodies.rectangle((x - 45) * scale, (y - 20) * scale, 17 * scale, 40 * scale, leftArmOptions);
+  const rightLowerArm = Bodies.rectangle((x + 45) * scale, (y + 25) * scale, 26 * scale, 64 * scale, rightLowerArmOptions);
+  const leftLowerArm = Bodies.rectangle((x - 45) * scale, (y + 25) * scale, 26 * scale, 64 * scale, leftLowerArmOptions);
+  const leftUpperLeg = Bodies.rectangle((x - 22) * scale, (y + 50) * scale, 21 * scale, 32 * scale, leftLegOptions);
+  const rightUpperLeg = Bodies.rectangle((x + 22) * scale, (y + 50) * scale, 21 * scale, 32 * scale, rightLegOptions);
+  const leftLowerLeg = Bodies.rectangle((x - 32) * scale, (y + 90) * scale, 38 * scale, 55 * scale, leftLowerLegOptions);
+  const rightLowerLeg = Bodies.rectangle((x + 32) * scale, (y + 90) * scale, 38 * scale, 55 * scale, rightLowerLegOptions);
 
-  const headContraint = Constraint.create({
+  const headConstraint = Constraint.create({
     bodyA: head,
     pointA: {
-      x: -21,
-      y: 155 * scale,
+      x: -5 * scale,
+      y: 80 * scale,
     },
     pointB: {
-      x: -21,
-      y: -115 * scale,
+      x: -10 * scale,
+      y: -50 * scale,
     },
     bodyB: chest,
     stiffness: 0.6,
     render: {
-      visible: false,
+      visible: true,
     },
   });
 
-  const headContraint2 = Constraint.create({
+  const headConstraint2 = Constraint.create({
     bodyA: head,
     pointA: {
-      x: 21,
-      y: 155 * scale,
+      x: 15 * scale,
+      y: 80 * scale,
     },
     pointB: {
-      x: 21,
-      y: -115 * scale,
+      x: 10 * scale,
+      y: -50 * scale,
     },
     bodyB: chest,
-    stiffness: 0.8,
+    stiffness: 0.6,
     render: {
-      visible: false,
+      visible: true,
     },
   });
 
   const chestToRightUpperArm = Constraint.create({
     bodyA: chest,
     pointA: {
-      x: 84 * scale,
-      y: -71 * scale,
+      x: 45 * scale,
+      y: -30 * scale,
     },
     pointB: {
-      x: 0,
-      y: -30 * scale,
+      x: 0 * scale,
+      y: -10 * scale,
     },
     bodyB: rightUpperArm,
     stiffness: 0.6,
     render: {
-      visible: false,
+      visible: true,
     },
   });
 
@@ -205,7 +231,7 @@ const ragdoll = (x, y, sc, options) => {
       y: -66 * scale,
     },
     pointB: {
-      x: -9,
+      x: -9 * scale,
       y: -25 * scale,
     },
     bodyB: rightUpperArm,
@@ -218,12 +244,12 @@ const ragdoll = (x, y, sc, options) => {
   const chestToLeftUpperArm = Constraint.create({
     bodyA: chest,
     pointA: {
-      x: -84 * scale,
-      y: -71 * scale,
+      x: -45 * scale,
+      y: -30 * scale,
     },
     pointB: {
-      x: 0,
-      y: -30 * scale,
+      x: 0 * scale,
+      y: -10 * scale,
     },
     bodyB: leftUpperArm,
     stiffness: 0.6,
@@ -239,7 +265,7 @@ const ragdoll = (x, y, sc, options) => {
       y: -66 * scale,
     },
     pointB: {
-      x: 9,
+      x: 9 * scale,
       y: -25 * scale,
     },
     bodyB: leftUpperArm,
@@ -253,16 +279,16 @@ const ragdoll = (x, y, sc, options) => {
     bodyA: rightUpperArm,
     bodyB: rightLowerArm,
     pointA: {
-      x: -5,
-      y: 21 * scale,
+      x: 0 * scale,
+      y: 20 * scale,
     },
     pointB: {
-      x: -5,
-      y: -60 * scale,
+      x: 0 * scale,
+      y: -25 * scale,
     },
     stiffness: 0.6,
     render: {
-      visible: false,
+      visible: true,
     },
   });
 
@@ -270,11 +296,11 @@ const ragdoll = (x, y, sc, options) => {
     bodyA: rightUpperArm,
     bodyB: rightLowerArm,
     pointA: {
-      x: 5,
+      x: 5 * scale,
       y: 21 * scale,
     },
     pointB: {
-      x: 5,
+      x: 5 * scale,
       y: -60 * scale,
     },
     stiffness: 0.6,
@@ -287,12 +313,12 @@ const ragdoll = (x, y, sc, options) => {
     bodyA: leftUpperArm,
     bodyB: leftLowerArm,
     pointA: {
-      x: -5,
-      y: 21 * scale,
+      x: -0 * scale,
+      y: 20 * scale,
     },
     pointB: {
-      x: -5,
-      y: -60 * scale,
+      x: -0 * scale,
+      y: -25 * scale,
     },
     stiffness: 0.6,
     render: {
@@ -304,11 +330,11 @@ const ragdoll = (x, y, sc, options) => {
     bodyA: leftUpperArm,
     bodyB: leftLowerArm,
     pointA: {
-      x: 5,
+      x: 5 * scale,
       y: 21 * scale,
     },
     pointB: {
-      x: 5,
+      x: 5 * scale,
       y: -60 * scale,
     },
     stiffness: 0.6,
@@ -320,68 +346,68 @@ const ragdoll = (x, y, sc, options) => {
   const chestToLeftUpperLeg = Constraint.create({
     bodyA: chest,
     pointA: {
-      x: -50 * scale,
-      y: 70 * scale,
+      x: -30 * scale,
+      y: 40 * scale,
     },
     pointB: {
-      x: 0,
-      y: -30 * scale,
+      x: -8 * scale,
+      y: -10 * scale,
     },
     bodyB: leftUpperLeg,
     stiffness: 0.6,
     render: {
-      visible: false,
+      visible: true,
     },
   });
 
   const chestToLeftUpperLeg2 = Constraint.create({
     bodyA: chest,
     pointA: {
-      x: -60 * scale,
-      y: 70 * scale,
+      x: -14 * scale,
+      y: 40 * scale,
     },
     pointB: {
-      x: -10,
-      y: -30 * scale,
+      x: 8 * scale,
+      y: -10 * scale,
     },
     bodyB: leftUpperLeg,
     stiffness: 0.6,
     render: {
-      visible: false,
+      visible: true,
     },
   });
 
   const chestToRightUpperLeg = Constraint.create({
     bodyA: chest,
     pointA: {
-      x: 50 * scale,
-      y: 70 * scale,
+      x: 30 * scale,
+      y: 40 * scale,
     },
     pointB: {
-      x: 0,
-      y: -30 * scale,
+      x: 8 * scale,
+      y: -10 * scale,
     },
     bodyB: rightUpperLeg,
     stiffness: 0.6,
     render: {
-      visible: false,
+      visible: true,
     },
   });
 
   const chestToRightUpperLeg2 = Constraint.create({
     bodyA: chest,
     pointA: {
-      x: 60 * scale,
-      y: 70 * scale,
+      x: 14 * scale,
+      y: 40 * scale,
     },
     pointB: {
-      x: 10,
-      y: -30 * scale,
+      x: -8 * scale,
+      y: -10 * scale,
     },
     bodyB: rightUpperLeg,
     stiffness: 0.6,
     render: {
-      visible: false,
+      visible: true,
     },
   });
 
@@ -389,16 +415,16 @@ const ragdoll = (x, y, sc, options) => {
     bodyA: leftUpperLeg,
     bodyB: leftLowerLeg,
     pointA: {
-      x: 7,
-      y: 20 * scale,
+      x: -6 * scale,
+      y: 15 * scale,
     },
     pointB: {
-      x: 25,
-      y: -50 * scale,
+      x: 4 * scale,
+      y: -25 * scale,
     },
     stiffness: 0.6,
     render: {
-      visible: false,
+      visible: true,
     },
   });
 
@@ -406,16 +432,16 @@ const ragdoll = (x, y, sc, options) => {
     bodyA: leftUpperLeg,
     bodyB: leftLowerLeg,
     pointA: {
-      x: -8,
-      y: 20 * scale,
+      x: 6 * scale,
+      y: 15 * scale,
     },
     pointB: {
-      x: 10,
-      y: -50 * scale,
+      x: 16 * scale,
+      y: -25 * scale,
     },
     stiffness: 0.6,
     render: {
-      visible: false,
+      visible: true,
     },
   });
 
@@ -423,16 +449,16 @@ const ragdoll = (x, y, sc, options) => {
     bodyA: rightUpperLeg,
     bodyB: rightLowerLeg,
     pointA: {
-      x: -7,
-      y: 20 * scale,
+      x: -6 * scale,
+      y: 15 * scale,
     },
     pointB: {
-      x: -25,
-      y: -50 * scale,
+      x: -16 * scale,
+      y: -25 * scale,
     },
     stiffness: 0.6,
     render: {
-      visible: false,
+      visible: true,
     },
   });
 
@@ -440,16 +466,16 @@ const ragdoll = (x, y, sc, options) => {
     bodyA: rightUpperLeg,
     bodyB: rightLowerLeg,
     pointA: {
-      x: 8,
-      y: 20 * scale,
+      x: 6 * scale,
+      y: 15 * scale,
     },
     pointB: {
-      x: -10,
-      y: -50 * scale,
+      x: -4 * scale,
+      y: -25 * scale,
     },
     stiffness: 0.6,
     render: {
-      visible: false,
+      visible: true,
     },
   });
 
@@ -469,16 +495,16 @@ const ragdoll = (x, y, sc, options) => {
       rightLowerArm, leftLowerArm,
     ],
     constraints: [
-      headContraint, headContraint2, chestToRightUpperArm,
+      headConstraint, headConstraint2,
+      chestToRightUpperArm,
       chestToLeftUpperArm, upperToLowerRightArm, upperToLowerLeftArm,
-      upperToLowerLeftLeg2, upperToLowerRightLeg2,
-      chestToRightUpperArm2, chestToLeftUpperArm2,
-      upperToLowerRightArm2, upperToLowerLeftArm2,
-      chestToLeftUpperLeg, chestToLeftUpperLeg2, chestToRightUpperLeg, chestToRightUpperLeg2, upperToLowerLeftLeg,
-      upperToLowerRightLeg, legToLeg,
+      chestToLeftUpperLeg, chestToLeftUpperLeg2,
+      chestToRightUpperLeg, chestToRightUpperLeg2,
+      upperToLowerRightLeg, upperToLowerRightLeg2,
+      upperToLowerLeftLeg,upperToLowerLeftLeg2,
+      legToLeg,
     ],
   });
-  console.log(leftUpperLeg.mass);
   return person;
 };
 

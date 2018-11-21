@@ -1,0 +1,13 @@
+body {
+  background-image: url('./../../images/background.png');
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: bottom;
+}
+
+html, body, div, canvas {
+  margin: 0;
+  padding: 0;
+}
