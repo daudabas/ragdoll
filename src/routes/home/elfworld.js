@@ -31,8 +31,8 @@ export default class ElfWorld {
   }
 
   createRender() {
-    const width = document.body.width;
-    const height = document.body.height;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
     const { engine } = this;
     const rootDiv = document.getElementById('root');
     this.render = Render.create({
@@ -41,6 +41,8 @@ export default class ElfWorld {
       options: {
         wireframes: false,
         background: 'transparent',
+        width,
+        height
       },
     });
   }
@@ -68,14 +70,14 @@ export default class ElfWorld {
   loadBodies() {
     const canvasHeight = this.render.canvas.height;
     const canvasWidth = this.render.canvas.width;
-    const ground = Bodies.rectangle(canvasWidth / 2, canvasHeight, canvasWidth, 20, { isStatic: true, render: { visible: true } });
-    const leftWall = Bodies.rectangle(-100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: true } });
-    const rightWall = Bodies.rectangle(canvasWidth + 100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: true } });
-    const ceiling = Bodies.rectangle(canvasWidth / 2, 10 - 100, canvasWidth, 200, { isStatic: true, render: { visible: false } });
+    this.ground = Bodies.rectangle(canvasWidth / 2, canvasHeight, canvasWidth, 20, { isStatic: true, render: { visible: true } });
+    this.leftWall = Bodies.rectangle(-100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: true } });
+    this.rightWall = Bodies.rectangle(canvasWidth + 100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: true } });
+    this.ceiling = Bodies.rectangle(canvasWidth / 2, 10 - 100, canvasWidth, 200, { isStatic: true, render: { visible: false } });
 
     this.ragdoll = Ragdoll(canvasWidth / 2, canvasHeight - 350, 1, { frictionAir: 0 });
 
-    World.add(this.engine.world, [ground, this.ragdoll]);
+    World.add(this.engine.world, [this.ground,this.leftWall, this.rightWall, this.ceiling, this.ragdoll]);
   }
 
   loadEvents() {
@@ -153,6 +155,32 @@ export default class ElfWorld {
     Engine.run(this.engine);
     Render.run(this.render);
 
-    setInterval(this.removeSnowflake.bind(this), 10000);
+    this.interval = setInterval(this.removeSnowflake.bind(this), 10000);
+  }
+
+  stop() {
+    console.log('stop');
+    clearInterval(this.interval);
+
+    for (let i = 0; i < this.snowflakes.length; i += 1) {
+      const snowFlake = this.snowflakes.shift();
+      Composite.remove(this.engine.world, snowFlake);
+    }
+
+    World.remove(this.engine.world, this.mouseConstraint);
+    World.remove(this.engine.world, this.ground);
+    World.remove(this.engine.world, this.leftWall);
+    World.remove(this.engine.world, this.rightWall);
+    World.remove(this.engine.world, this.ceiling);
+    
+    Composite.remove(this.engine.world, this.ragdoll);
+
+    Render.stop(this.render);
+    World.clear(this.engine.world);
+    Engine.clear(this.engine);
+    this.render.canvas.remove();
+
+    this.render.canvas = null;
+    this.render.context = null;
   }
 }

@@ -1,4 +1,4 @@
-body {
+body.home {
   background-image: url('./../../images/background.png');
   -webkit-background-size: cover;
   -moz-background-size: cover;

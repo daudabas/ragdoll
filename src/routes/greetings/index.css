@@ -1,0 +1,66 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 90%;
+}
+
+div {
+  text-align: center;
+}
+
+body.greetings {
+  background-color: #ffffff;
+}
+
+div.greetings-logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  /* padding: 5% */
+}
+
+div.greetings-group {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+  padding: 10%
+}
+
+div.greetings-createdby {
+  padding: 5%;
+  font-size: 12pt
+}
+
+div.greetings-title {
+  font-size: 18pt
+}
+
+div.greetings-textbody {
+  padding: 6%;
+  font-size: 12pt
+}
+
+div.greetings-button {
+  text-align: center;
+}
+
+.button {
+  background-color: #C82746; /* Green */
+    border: none;
+    border-radius: 10px;
+    color: white;
+    width: 90%;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    position: relative;
+}

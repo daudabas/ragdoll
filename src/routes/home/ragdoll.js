@@ -21,12 +21,12 @@ const ragdoll = (x, y, sc, options) => {
 
   const headOptions = Common.extend({
     label: 'head',
-    mass: 0.5,
+    mass: 0.1,
     collisionFilter: {
       group: Body.nextGroup(true),
     },
     chamfer: {
-      radius: [15 * scale, 15 * scale, 15 * scale, 15 * scale],
+      radius: [75 * scale, 75 * scale, 75 * scale, 75 * scale],
     },
     render: {
       sprite: {
@@ -177,16 +177,16 @@ const ragdoll = (x, y, sc, options) => {
     bodyA: head,
     pointA: {
       x: -5 * scale,
-      y: 80 * scale,
+      y: 90 * scale,
     },
     pointB: {
       x: -10 * scale,
-      y: -50 * scale,
+      y: -40 * scale,
     },
     bodyB: chest,
     stiffness: 0.6,
     render: {
-      visible: true,
+      visible: false,
     },
   });
 
@@ -194,16 +194,16 @@ const ragdoll = (x, y, sc, options) => {
     bodyA: head,
     pointA: {
       x: 15 * scale,
-      y: 80 * scale,
+      y: 90 * scale,
     },
     pointB: {
       x: 10 * scale,
-      y: -50 * scale,
+      y: -40 * scale,
     },
     bodyB: chest,
     stiffness: 0.6,
     render: {
-      visible: true,
+      visible: false,
     },
   });
 
@@ -220,7 +220,7 @@ const ragdoll = (x, y, sc, options) => {
     bodyB: rightUpperArm,
     stiffness: 0.6,
     render: {
-      visible: true,
+      visible: false,
     },
   });
 
@@ -288,7 +288,7 @@ const ragdoll = (x, y, sc, options) => {
     },
     stiffness: 0.6,
     render: {
-      visible: true,
+      visible: false,
     },
   });
 
@@ -356,7 +356,7 @@ const ragdoll = (x, y, sc, options) => {
     bodyB: leftUpperLeg,
     stiffness: 0.6,
     render: {
-      visible: true,
+      visible: false,
     },
   });
 
@@ -373,7 +373,7 @@ const ragdoll = (x, y, sc, options) => {
     bodyB: leftUpperLeg,
     stiffness: 0.6,
     render: {
-      visible: true,
+      visible: false,
     },
   });
 
@@ -390,7 +390,7 @@ const ragdoll = (x, y, sc, options) => {
     bodyB: rightUpperLeg,
     stiffness: 0.6,
     render: {
-      visible: true,
+      visible: false,
     },
   });
 
@@ -407,7 +407,7 @@ const ragdoll = (x, y, sc, options) => {
     bodyB: rightUpperLeg,
     stiffness: 0.6,
     render: {
-      visible: true,
+      visible: false,
     },
   });
 
@@ -424,7 +424,7 @@ const ragdoll = (x, y, sc, options) => {
     },
     stiffness: 0.6,
     render: {
-      visible: true,
+      visible: false,
     },
   });
 
@@ -441,7 +441,7 @@ const ragdoll = (x, y, sc, options) => {
     },
     stiffness: 0.6,
     render: {
-      visible: true,
+      visible: false,
     },
   });
 
@@ -458,7 +458,7 @@ const ragdoll = (x, y, sc, options) => {
     },
     stiffness: 0.6,
     render: {
-      visible: true,
+      visible: false,
     },
   });
 
@@ -475,7 +475,7 @@ const ragdoll = (x, y, sc, options) => {
     },
     stiffness: 0.6,
     render: {
-      visible: true,
+      visible: false,
     },
   });
 

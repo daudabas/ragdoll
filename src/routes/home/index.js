@@ -19,6 +19,19 @@ export default class Game extends React.Component {
     window.addEventListener('orientationchange', this.elfWorld.updateGravity.bind(this.elfWorld));
     window.addEventListener('deviceorientation', this.elfWorld.updateGravity.bind(this.elfWorld), true);
     window.addEventListener('shake', this.elfWorld.randomImpulse.bind(this.elfWorld), false);
+
+    document.body.classList.add('home');
+  }
+
+  componentWillUnmount() {
+    document.body.classList.remove('home');
+
+    window.removeEventListener('orientationchange', this.elfWorld.updateGravity.bind(this.elfWorld));
+    window.removeEventListener('deviceorientation', this.elfWorld.updateGravity.bind(this.elfWorld), true);
+    window.removeEventListener('shake', this.elfWorld.randomImpulse.bind(this.elfWorld), false);
+
+    this.shakeEvent.stop();
+    this.elfWorld.stop();
   }
 
   render() {
