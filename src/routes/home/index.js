@@ -1,41 +1,31 @@
 import React from 'react';
-import Shake from 'shake.js';
-import ElfWorld from './elfworld';
-import './index.css';
+import Game from './game';
+import Popup from 'reactjs-popup';
+import Info from '../info';
 
-export default class Game extends React.Component {
-  constructor() {
-    super();
-    console.log('here');
-    this.elfWorld = new ElfWorld();
-    this.shakeEvent = new Shake({ threshold: 10, timeout: 1000 });
-
+export default class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.gameRef = React.createRef();
   }
 
-  componentDidMount () {
-    this.elfWorld.init();
-    this.shakeEvent.start();
-
-    window.addEventListener('orientationchange', this.elfWorld.updateGravity.bind(this.elfWorld));
-    window.addEventListener('deviceorientation', this.elfWorld.updateGravity.bind(this.elfWorld), true);
-    window.addEventListener('shake', this.elfWorld.randomImpulse.bind(this.elfWorld), false);
-
-    document.body.classList.add('home');
-  }
-
-  componentWillUnmount() {
-    document.body.classList.remove('home');
-
-    window.removeEventListener('orientationchange', this.elfWorld.updateGravity.bind(this.elfWorld));
-    window.removeEventListener('deviceorientation', this.elfWorld.updateGravity.bind(this.elfWorld), true);
-    window.removeEventListener('shake', this.elfWorld.randomImpulse.bind(this.elfWorld), false);
-
-    this.shakeEvent.stop();
-    this.elfWorld.stop();
+  reset() {
+    this.gameRef.current.reset();
   }
 
   render() {
-    return null;
+    return (
+      <div>
+        <Game ref={this.gameRef} />
+        <div className="share">
+          <button onClick={this.reset.bind(this)}>reload</button>
+          <button>camera</button>
+          <button>share</button>
+          <Popup trigger={<button>Info</button>} modal closeOnDocumentClick>
+            <Info />
+          </Popup>
+        </div>
+      </div>
+    );
   }
 }
-

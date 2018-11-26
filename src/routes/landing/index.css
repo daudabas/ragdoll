@@ -49,6 +49,11 @@ div.greetings-textbody {
 
 div.greetings-button {
   text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  bottom: 5px;
 }
 
 .button {

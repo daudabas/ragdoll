@@ -224,23 +224,6 @@ const ragdoll = (x, y, sc, options) => {
     },
   });
 
-  const chestToRightUpperArm2 = Constraint.create({
-    bodyA: chest,
-    pointA: {
-      x: 75 * scale,
-      y: -66 * scale,
-    },
-    pointB: {
-      x: -9 * scale,
-      y: -25 * scale,
-    },
-    bodyB: rightUpperArm,
-    stiffness: 0.6,
-    render: {
-      visible: false,
-    },
-  });
-
   const chestToLeftUpperArm = Constraint.create({
     bodyA: chest,
     pointA: {
@@ -250,23 +233,6 @@ const ragdoll = (x, y, sc, options) => {
     pointB: {
       x: 0 * scale,
       y: -10 * scale,
-    },
-    bodyB: leftUpperArm,
-    stiffness: 0.6,
-    render: {
-      visible: false,
-    },
-  });
-
-  const chestToLeftUpperArm2 = Constraint.create({
-    bodyA: chest,
-    pointA: {
-      x: -75 * scale,
-      y: -66 * scale,
-    },
-    pointB: {
-      x: 9 * scale,
-      y: -25 * scale,
     },
     bodyB: leftUpperArm,
     stiffness: 0.6,
@@ -292,23 +258,6 @@ const ragdoll = (x, y, sc, options) => {
     },
   });
 
-  const upperToLowerRightArm2 = Constraint.create({
-    bodyA: rightUpperArm,
-    bodyB: rightLowerArm,
-    pointA: {
-      x: 5 * scale,
-      y: 21 * scale,
-    },
-    pointB: {
-      x: 5 * scale,
-      y: -60 * scale,
-    },
-    stiffness: 0.6,
-    render: {
-      visible: false,
-    },
-  });
-
   const upperToLowerLeftArm = Constraint.create({
     bodyA: leftUpperArm,
     bodyB: leftLowerArm,
@@ -319,23 +268,6 @@ const ragdoll = (x, y, sc, options) => {
     pointB: {
       x: -0 * scale,
       y: -25 * scale,
-    },
-    stiffness: 0.6,
-    render: {
-      visible: false,
-    },
-  });
-
-  const upperToLowerLeftArm2 = Constraint.create({
-    bodyA: leftUpperArm,
-    bodyB: leftLowerArm,
-    pointA: {
-      x: 5 * scale,
-      y: 21 * scale,
-    },
-    pointB: {
-      x: 5 * scale,
-      y: -60 * scale,
     },
     stiffness: 0.6,
     render: {
@@ -491,8 +423,8 @@ const ragdoll = (x, y, sc, options) => {
   const person = Composite.create({
     bodies: [
       leftUpperLeg, rightUpperLeg, leftLowerLeg, rightLowerLeg,
-      chest, head, rightUpperArm, leftUpperArm,
-      rightLowerArm, leftLowerArm,
+      chest, rightUpperArm, leftUpperArm,
+      rightLowerArm, leftLowerArm, head,
     ],
     constraints: [
       headConstraint, headConstraint2,

@@ -4,7 +4,7 @@ import logoImage from './images/logo@2x.png';
 import groupImage from './images/group@2x.png';
 import { Link } from 'react-router-dom';
 
-export default class Greetings extends React.Component {
+export default class Landing extends React.Component {
 
   componentDidMount() {
     document.body.classList.add('greetings');

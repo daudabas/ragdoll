@@ -1,0 +1,5 @@
+html,
+body.info {
+  position: absolute;
+  overflow: hidden;
+}

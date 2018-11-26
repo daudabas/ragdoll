@@ -126,9 +126,15 @@ export default class ElfWorld {
 
   removeSnowflake() {
     const size = this.snowflakes.length < 10 ? this.snowflakes.length : 10;
-    for (let i = 0; i < size; i += 1) {
-      const snowFlake = this.snowflakes.shift();
-      Composite.remove(this.engine.world, snowFlake);
+    const snowFlakesToRemove = [];
+    console.log(size);
+    for (let i = 0; i < size; i++) {
+      snowFlakesToRemove.push(this.snowflakes[i]);
+      Composite.remove(this.engine.world, this.snowflakes[i]);
+    }
+
+    for (let i = 0; i < size; i++) {
+      this.snowflakes.shift();
     }
   }
 
@@ -155,17 +161,36 @@ export default class ElfWorld {
     Engine.run(this.engine);
     Render.run(this.render);
 
-    this.interval = setInterval(this.removeSnowflake.bind(this), 10000);
+    // this.interval = setInterval(this.removeSnowflake.bind(this), 10000);
+  }
+
+  reset() {
+    this.snowflakes.forEach(snowflake => {
+      Composite.remove(this.engine.world, snowflake);
+    });
+
+    this.snowflakes = [];
+
+    World.remove(this.engine.world, this.mouseConstraint);
+    World.remove(this.engine.world, this.ground);
+    World.remove(this.engine.world, this.leftWall);
+    World.remove(this.engine.world, this.rightWall);
+    World.remove(this.engine.world, this.ceiling);
+    
+    Composite.remove(this.engine.world, this.ragdoll);
+
+    this.loadBodies();
   }
 
   stop() {
-    console.log('stop');
-    clearInterval(this.interval);
+    // clearInterval(this.interval);
 
-    for (let i = 0; i < this.snowflakes.length; i += 1) {
-      const snowFlake = this.snowflakes.shift();
-      Composite.remove(this.engine.world, snowFlake);
-    }
+    this.snowflakes.forEach(snowflake => {
+      Composite.remove(this.engine.world, snowflake);
+    });
+
+    this.snowflakes = [];
+
 
     World.remove(this.engine.world, this.mouseConstraint);
     World.remove(this.engine.world, this.ground);
