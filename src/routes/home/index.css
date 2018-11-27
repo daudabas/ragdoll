@@ -12,9 +12,68 @@ html, body, div, canvas {
   padding: 0;
 }
 
-div.share {
+div.buttons {
   position: fixed;
-  top: 10%;
+  top: 10px;
   left: 0;
   right: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+button.share {
+  background-image: url('./images/share@2x.png');
+  background-size: cover;
+  height: 48px;
+  width: 48px;
+  border: none;
+}
+
+button.camera {
+  background-image: url('./images/camera@2x.png');
+  background-size: cover;
+  height: 48px;
+  width: 48px;
+  border: none;
+  margin-right: 10px;
+
+}
+
+button.info {
+  background-image: url('./images/info@2x.png');
+  background-size: cover;
+  height: 48px;
+  width: 48px;
+  border: none;
+}
+
+button.camera {
+  background-image: url('./images/camera@2x.png');
+  background-size: cover;
+  height: 48px;
+  width: 48px;
+  border: none;
+  margin-right: 10px;
+
+}
+
+button.refresh {
+  background-image: url('./images/refresh@2x.png');
+  background-size: cover;
+  height: 48px;
+  width: 48px;
+  border: none;
+  margin-right: 10px;
+}
+
+.left-buttons {
+  text-align: left;
+  width: 50%;
+  float: left;
+}
+
+.right-buttons {
+  text-align: right;
+  width: 20%;
+  float: right;
 }

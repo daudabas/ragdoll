@@ -17,13 +17,17 @@ export default class Home extends React.Component {
     return (
       <div>
         <Game ref={this.gameRef} />
-        <div className="share">
-          <button onClick={this.reset.bind(this)}>reload</button>
-          <button>camera</button>
-          <button>share</button>
-          <Popup trigger={<button>Info</button>} modal closeOnDocumentClick>
-            <Info />
-          </Popup>
+        <div className="buttons">
+          <div className="left-buttons">
+            <button className="refresh" onClick={this.reset.bind(this)} />
+            <button className="camera" />
+            <button className="share"/>
+          </div>
+          <div className="right-buttons">
+            <Popup trigger={<button className="info" />} modal closeOnDocumentClick>
+              <Info />
+            </Popup>
+          </div>
         </div>
       </div>
     );
