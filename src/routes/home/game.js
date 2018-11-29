@@ -6,7 +6,7 @@ import './index.css';
 export default class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.elfWorld = new ElfWorld();
+    this.elfWorld = new ElfWorld(props.headURL);
     this.shakeEvent = new Shake({ threshold: 10, timeout: 1000 });
   }
 

@@ -8,8 +8,10 @@ function importAll(r) {
 
 const images = importAll(require.context('./images', false, /\.(png|jpe?g|svg)$/));
 
-const ragdoll = (x, y, sc, options) => {
+const ragdoll = (headURL, x, y, sc, options) => {
   const scale = typeof sc === 'undefined' ? 1 : sc;
+
+  const headImage = headURL || images['head@2x.png'];
 
   const {
     Body,
@@ -30,7 +32,7 @@ const ragdoll = (x, y, sc, options) => {
     },
     render: {
       sprite: {
-        texture: images['head@2x.png'],
+        texture: headImage,
         xScale: 0.5,
         yScale: 0.5,
       },

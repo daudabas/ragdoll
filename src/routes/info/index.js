@@ -1,7 +1,41 @@
 import React, { Component } from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import Carousel from 'nuka-carousel';
+import Decorator from './decorator';
+import Card from './card';
+import './index.css';
+import infoImage1 from './images/info_image_1.png';
+import infoImage2 from './images/info_image_2.png';
+import infoImage3 from './images/info_image_3.png';
+import infoImage4 from './images/info_image_4.png';
+import infoImage5 from './images/info_image_5.png';
+
+const infoPages = [
+  {
+    image: infoImage1,
+    title: 'Thou shall be an elf',
+    body: 'Become the elf by taking a photo or upload from your photo gallery!'
+  },
+  {
+    image: infoImage2,
+    title: 'Let it snow, let it snow, let it snow~',
+    body: 'Tap the background to generate snow!'
+  },
+  {
+    image: infoImage3,
+    title: 'There and back again',
+    body: 'Press the reset button to revert everything back to normal'
+  },
+  {
+    image: infoImage4,
+    title: 'Give it a best pose',
+    body: 'Tap and hold any parts of the elf to move him around'
+  },
+  {
+    image: infoImage5,
+    title: 'Christmas wishes',
+    body: 'Tap the elf to generate christmas greetings and messages'
+  },
+]
 
 export default class SimpleSlider extends Component {
 
@@ -15,36 +49,20 @@ export default class SimpleSlider extends Component {
 
   render() {
     const settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      arrows: false,
-    };
+      renderCenterLeftControls: null,
+      renderCenterRightControls: null,
+    }
     return (
-      <div>
-        <Slider {...settings}>
-          <div>
-            <h3>1</h3>
-          </div>
-          <div>
-            <h3>2</h3>
-          </div>
-          <div>
-            <h3>3</h3>
-          </div>
-          <div>
-            <h3>4</h3>
-          </div>
-          <div>
-            <h3>5</h3>
-          </div>
-          <div>
-            <h3>6</h3>
-          </div>
-        </Slider>
-      </div>
+      <Carousel 
+        {...settings} 
+        renderBottomCenterControls={(props) => (<Decorator {...props} />)}
+        >
+        <Card {...infoPages[0]} />
+        <Card {...infoPages[1]} />
+        <Card {...infoPages[2]} />
+        <Card {...infoPages[3]} />
+        <Card {...infoPages[4]} />
+      </Carousel>
     );
   }
 }

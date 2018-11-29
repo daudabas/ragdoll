@@ -17,8 +17,9 @@ const {
 } = Matter;
 
 export default class ElfWorld {
-  constructor(maxSnowflakes) {
+  constructor(headURL, maxSnowflakes) {
     this.snowflakes = [];
+    this.headURL = headURL;
     this.ragdoll = null;
     this.maxSnowflakes = maxSnowflakes || 500;
 
@@ -75,7 +76,7 @@ export default class ElfWorld {
     this.rightWall = Bodies.rectangle(canvasWidth + 100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: true } });
     this.ceiling = Bodies.rectangle(canvasWidth / 2, 10 - 100, canvasWidth, 200, { isStatic: true, render: { visible: false } });
 
-    this.ragdoll = Ragdoll(canvasWidth / 2, canvasHeight - 350, 1, { frictionAir: 0 });
+    this.ragdoll = Ragdoll(this.headURL, canvasWidth / 2, canvasHeight - 350, 1, { frictionAir: 0 });
 
     World.add(this.engine.world, [this.ground,this.leftWall, this.rightWall, this.ceiling, this.ragdoll]);
   }
@@ -176,10 +177,12 @@ export default class ElfWorld {
     World.remove(this.engine.world, this.leftWall);
     World.remove(this.engine.world, this.rightWall);
     World.remove(this.engine.world, this.ceiling);
+    World.remove(this.engine.world, this.mouseConstraint);
     
     Composite.remove(this.engine.world, this.ragdoll);
 
     this.loadBodies();
+    World.add(this.engine.world, this.mouseConstraint);
   }
 
   stop() {
