@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PinchToZoom from 'react-pinch-and-zoom';
 import mask from './images/face_mask.png';
 import './index.css';
+import crypto from 'crypto';
 
 import ImageHelper from './imageHelper';
 
@@ -33,38 +34,75 @@ export default class Face extends Component {
     document.body.removeEventListener('touchmove', preventDefault, { passive: false });
   } 
 
-  getRotatedImage(callback) {
-    ImageHelper.getOrientation(this.state.file, (orientation) => {
-      ImageHelper.rotateBase64Image(this.img.current.src, orientation, (dataURL) => {
-        const rotatedImage = new Image();
-        rotatedImage.src = dataURL;
+  createDownloadLink(dataURL) {
+    const blob = ImageHelper.createFile(dataURL);
+    var blobUrl = URL.createObjectURL(blob);
+    
+    var link = document.createElement("a"); // Or maybe get it from the current document
+    link.href = blobUrl;
+    link.download = "aDefaultFileName.png";
+    link.click();
+    URL.revokeObjectURL(blobUrl);
+  }
 
-        rotatedImage.onload = () => {
-          callback(rotatedImage);
-        }
-      });
-    })
+  uploadImage(base64Image) {
+    var id = crypto.randomBytes(4).toString('hex');
+    const encodedImage = base64Image.split(',')[1]
+
+    const data = {
+      name: id,
+      image: encodedImage,
+    }
+
+    const params = {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }
+    const url = 'https://humu847pz6.execute-api.ap-southeast-1.amazonaws.com/prod/image';
+    fetch(url, params).then((response) => {
+      window.location.replace(`${window.location.origin}/home/${id}`);
+    });
   }
 
   handleClick() {
+    const maskImage = new Image();
+    const image = new Image();
+
+    const {currentTranslate, currentZoomFactor } = this.pinchToZoom.current.getTransform()
+    const sourceX = currentTranslate.x * currentZoomFactor;
+    const sourceY = currentTranslate.y * currentZoomFactor;
+
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
 
-    const maskImage = new Image();
+    canvas.width = this.overlayDiv.current.offsetWidth;
+    canvas.height = this.overlayDiv.current.offsetHeight;
+
     maskImage.src = `${window.location.origin}${mask}`;
-    const {currentTranslate, currentZoomFactor } = this.pinchToZoom.current.getTransform()
-    const translateX = currentTranslate.x * currentZoomFactor;
-    const translateY = currentTranslate.y * currentZoomFactor;
 
     maskImage.onload = () => {
-      this.getRotatedImage((image) => {
-        canvas.width = this.overlayDiv.current.offsetWidth;
-        canvas.height = this.overlayDiv.current.offsetHeight;
+      ImageHelper.rotateImage(this.state.file, (base64Image) => {
+        image.src = base64Image;
+      })
+
+      image.onload = () => {
+        const zoom = this.img.current.width / image.width;
+        const sourceWidth = image.width * zoom * currentZoomFactor;
+        const sourceHeight = image.height * zoom * currentZoomFactor;
+
         context.drawImage(maskImage, 0, 0, canvas.width, canvas.height);
         context.globalCompositeOperation = 'source-out';
-        context.drawImage(image, translateX, translateY, this.img.current.width * currentZoomFactor, this.img.current.height * currentZoomFactor);
-        this.resultImg.current.src = canvas.toDataURL();
-      })
+        context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight);
+        context.save();
+
+        const newWidth = 200;
+        const newHeight = 200;
+        const translateX = -1 * (canvas.width / 2 - newWidth / 2);
+        const translateY = -1 * (canvas.height / 2 - newHeight / 2);
+        const croppedBase64Image = ImageHelper.cropImage(canvas, translateX, translateY, newWidth, newHeight);
+        
+        this.uploadImage(croppedBase64Image);
+      }
     }
   }
 

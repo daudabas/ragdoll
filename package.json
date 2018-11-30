@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "binary-file": "^0.2.1",
+    "crypto": "^1.0.1",
     "exif-js": "^2.3.0",
     "nuka-carousel": "^4.4.3",
     "react": "^16.6.3",

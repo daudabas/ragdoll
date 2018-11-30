@@ -47,52 +47,86 @@ const getOrientation = (file, callback) => {
 }
 
 const rotateBase64Image = (base64Image, orientation, callback) => {
-  // create an off-screen canvas
-  var offScreenCanvas = document.createElement('canvas');
-  var offScreenCanvasCtx = offScreenCanvas.getContext('2d');
+  if (orientation === -1) {
+    return callback(base64Image);
+  }
 
-  // cteate Image
-  var img = new Image();
-  img.src = base64Image;
-  
-  img.onload = () => {
-    // set its dimension to rotated size
-    
+  var canvas = document.createElement('canvas');
+  var context = canvas.getContext('2d');
+
+  var image = new Image();
+  image.src = base64Image;
+  image.onload = () => {
+    canvas.height = image.height;
+    canvas.width = image.width;
     switch (orientation) {
       case 1:
-        offScreenCanvas.height = img.height;
-        offScreenCanvas.width = img.width;
+        canvas.height = image.height;
+        canvas.width = image.width;
         break;
       case 3:
-        offScreenCanvas.height = img.height;
-        offScreenCanvas.width = img.width;
-        offScreenCanvasCtx.rotate(180 * Math.PI / 180);
-        offScreenCanvasCtx.translate(-offScreenCanvas.width, -offScreenCanvas.height);
+        canvas.height = image.height;
+        canvas.width = image.width;
+        context.rotate(180 * Math.PI / 180);
+        context.translate(-canvas.width, -canvas.height);
         break
       case 6:
-        offScreenCanvas.height = img.width;
-        offScreenCanvas.width = img.height;
-        offScreenCanvasCtx.rotate(90 * Math.PI / 180);
-        offScreenCanvasCtx.translate(0, -offScreenCanvas.width);
+        canvas.height = image.width;
+        canvas.width = image.height;
+        context.rotate(90 * Math.PI / 180);
+        context.translate(0, -canvas.width);
         break
       default:
+        canvas.height = image.height;
+        canvas.width = image.width;
         break; 
     }
-    // // rotate and draw source image into the off-screen canvas:
-    // if (isClockwise) { 
-    //     offScreenCanvasCtx.rotate(90 * Math.PI / 180);
-    //     offScreenCanvasCtx.translate(0, -offScreenCanvas.width);
-    // } else {
-    //     offScreenCanvasCtx.rotate(-90 * Math.PI / 180);
-    //     offScreenCanvasCtx.translate(-offScreenCanvas.height, 0);
-    // }
-    offScreenCanvasCtx.drawImage(img, 0, 0);
-    const dataURL = offScreenCanvas.toDataURL();
-    callback(dataURL);
+
+    context.drawImage(image, 0, 0);
+    const newBase64Image = canvas.toDataURL();
+
+    return callback(newBase64Image);
+  };
+};
+
+const createFile = (base64Image) => {
+  const blobBin = atob(base64Image.split(',')[1]);
+  const array = [];
+  for (var i = 0; i < blobBin.length; i++) {
+    array.push(blobBin.charCodeAt(i));
   }
+  const file = new Blob([new Uint8Array(array)], {type: 'image/png'});
+
+  return file;
+};
+
+const rotateImage = (file, callback) => {
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    getOrientation(file, (orientation) => {
+      rotateBase64Image(reader.result, orientation, (base64Image) => {
+        callback(base64Image);
+      })
+    })
+  }
+
+  reader.readAsDataURL(file);
+};
+
+const cropImage = (canvas, translateX, translateY, width, height) => {
+  const tempCanvas = document.createElement('canvas');
+  const tempContext = tempCanvas.getContext('2d');
+
+  tempCanvas.width = width;
+  tempCanvas.height = height;
+
+  tempContext.drawImage(canvas, translateX, translateY);
+
+  return tempCanvas.toDataURL();
 }
 
 module.exports = {
-  getOrientation,
-  rotateBase64Image,
+  createFile,
+  rotateImage,
+  cropImage,
 }

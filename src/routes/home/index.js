@@ -27,7 +27,9 @@ export default class Home extends React.Component {
 
   componentWillMount() {
       const { id } = this.props.match.params;
-      this.setState({ id });
+      if (typeof id !== 'undefined') {
+        this.setState({ id, headURL: `https://2359elf-faces.s3.ap-southeast-1.amazonaws.com/faces/${id}.jpg` });
+      } 
   }
 
   openModal() {
@@ -50,7 +52,7 @@ export default class Home extends React.Component {
   render() {
     return (
       <div>
-        <Game ref={this.gameRef} headURL="" />
+        <Game ref={this.gameRef} headURL={this.state.headURL} />
         <div className="buttons">
           <div className="left-buttons">
             <button className="refresh" onClick={this.reset.bind(this)} />
