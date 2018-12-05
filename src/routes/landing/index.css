@@ -1,16 +1,10 @@
-body {
+html {
+  height: 100%;
+}
+
+body.landing {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-img {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 90%;
-}
-
-div {
-  text-align: center;
+  background: url('./images/background.png') no-repeat center bottom; 
 }
 
 body.greetings {
@@ -22,7 +16,15 @@ div.greetings-logo {
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+  text-align: center;
   /* padding: 5% */
+}
+
+div.greetings-logo img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 90%;
 }
 
 div.greetings-group {
@@ -35,16 +37,38 @@ div.greetings-group {
 
 div.greetings-createdby {
   padding: 5%;
-  font-size: 12pt
-}
-
-div.greetings-title {
-  font-size: 18pt
+  font-size: 12pt;
+  text-align: center;
+  color: white;
 }
 
 div.greetings-textbody {
-  padding: 6%;
-  font-size: 12pt
+  margin-top: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 20px;
+  font-size: 12pt;
+  color: black;
+  background: url('./images/chatbox@2x.png') no-repeat bottom;
+  background-size: cover;
+  text-align: center;
+}
+div.greetings-elves {
+  height: 21vh;
+  text-align: center;
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, 0);
+}
+
+div.greetings-elves img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 div.greetings-button {

@@ -1,15 +1,12 @@
-body.home {
-  background-image: url('./../../images/background.png');
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  background-position: bottom;
+html {
+  height: 100%;
 }
 
-html, body, div, canvas {
-  margin: 0;
-  padding: 0;
+body.home {
+  background: url('./images/background.png') no-repeat center bottom;
+  margin: 0px;
+  padding: 0px;
+  position: fixed;
   overflow: hidden;
 }
 
@@ -30,16 +27,6 @@ button.share {
   border: none;
 }
 
-button.camera {
-  background-image: url('./images/camera@2x.png');
-  background-size: cover;
-  height: 48px;
-  width: 48px;
-  border: none;
-  margin-right: 10px;
-
-}
-
 button.info {
   background-image: url('./images/info@2x.png');
   background-size: cover;
@@ -55,7 +42,6 @@ button.camera {
   width: 48px;
   border: none;
   margin-right: 10px;
-
 }
 
 button.refresh {
@@ -96,7 +82,7 @@ button.close {
   background-color: rgba(0, 0, 0, 0.75);
 }
 
-.modal-content {
+.info-modal-content {
   position: absolute;
   top: 40px;
   left: 0;
@@ -105,4 +91,21 @@ button.close {
   border: none;
   overflow-y: auto;
   padding: 0;
+  text-align: center;
+}
+
+.face-modal-content {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  right: 0;
+  bottom: 0px;
+  border: none;
+  overflow-y: auto;
+  padding: 0;
+  text-align: center;
+}
+
+#custom-file-input {
+  display: none;
 }

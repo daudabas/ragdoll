@@ -71,9 +71,9 @@ export default class ElfWorld {
   loadBodies() {
     const canvasHeight = this.render.canvas.height;
     const canvasWidth = this.render.canvas.width;
-    this.ground = Bodies.rectangle(canvasWidth / 2, canvasHeight, canvasWidth, 20, { isStatic: true, render: { visible: true } });
-    this.leftWall = Bodies.rectangle(-100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: true } });
-    this.rightWall = Bodies.rectangle(canvasWidth + 100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: true } });
+    this.ground = Bodies.rectangle(canvasWidth / 2, canvasHeight, canvasWidth, 20, { isStatic: true, render: { visible: false } });
+    this.leftWall = Bodies.rectangle(-100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: false } });
+    this.rightWall = Bodies.rectangle(canvasWidth + 100, canvasHeight / 2, 200, canvasHeight, { isStatic: true, render: { visible: false } });
     this.ceiling = Bodies.rectangle(canvasWidth / 2, 10 - 100, canvasWidth, 200, { isStatic: true, render: { visible: false } });
 
     this.ragdoll = Ragdoll(this.headURL, canvasWidth / 2, canvasHeight - 350, 1, { frictionAir: 0 });

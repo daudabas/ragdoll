@@ -1,18 +1,24 @@
 import React from 'react';
 import './index.css';
 import logoImage from './images/logo@2x.png';
-import groupImage from './images/group@2x.png';
+import elvesImage from './images/elves@2x.png';
 import { Link } from 'react-router-dom';
+
+function preventDefault(e){
+  e.preventDefault();
+}
 
 export default class Landing extends React.Component {
 
   componentDidMount() {
-    document.body.classList.add('greetings');
+    document.body.classList.add('landing');
+    document.body.addEventListener('touchmove', preventDefault, { passive: false });
   }
 
   componentWillUnmount() {
-    document.body.classList.remove('greetings');
-  }
+    document.body.classList.remove('landing');
+    document.body.removeEventListener('touchmove', preventDefault, { passive: false });
+  } 
 
   render() {
     return (
@@ -23,20 +29,20 @@ export default class Landing extends React.Component {
         <div className="greetings-logo">
           <img alt="logo" src={logoImage} />
         </div>
-        <div className="greetings-group">
-          <img alt="group" src={groupImage} />
-        </div>
-        <div className="greetings-title">
-          Merry Christmas!
-        </div>
         <div className="greetings-textbody">
+          <p>Merry Christmas!</p>
+          <p>
           Happy Holidays from everyone at 2359 Media.
           We hope your holidays will be filled with joy and laughter through the New Year.
-        </div>
-        <div className="greetings-button">
+          </p>
+          <p>
           <Link to="/home">
             <button className="button">START</button>
           </Link>
+          </p>
+        </div>
+        <div className="greetings-elves">
+          <img alt="elves" src={elvesImage} />
         </div>
       </div>
     );

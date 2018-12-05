@@ -2,6 +2,7 @@ import React from 'react';
 import Game from './game';
 import Modal from 'react-modal';
 import Info from '../info';
+import Face from '../face';
 import { Link } from 'react-router-dom';
 
 Modal.setAppElement('#root');
@@ -15,14 +16,19 @@ export default class Home extends React.Component {
     super(props);
     this.gameRef = React.createRef();
     this.state = {
-      modalIsOpen: false,
+      infoModalIsOpen: false,
+      faceModalIsOpen: false,
       id: null,
       headURL: null,
     };
 
-    this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.openInfoModal = this.openInfoModal.bind(this);
+    this.afterOpenInfoModal = this.afterOpenInfoModal.bind(this);
+    this.closeInfoModal = this.closeInfoModal.bind(this);
+
+    this.openFaceModal = this.openFaceModal.bind(this);
+    this.afterOpenFaceModal = this.afterOpenFaceModal.bind(this);
+    this.closeFaceModal = this.closeFaceModal.bind(this);
   }
 
   componentWillMount() {
@@ -32,21 +38,44 @@ export default class Home extends React.Component {
       } 
   }
 
-  openModal() {
-    this.setState({ modalIsOpen: true });
+  openInfoModal() {
+    this.setState({ infoModalIsOpen: true });
   }
 
-  afterOpenModal() {
+  afterOpenInfoModal() {
     document.body.addEventListener('touchmove', preventDefault, { passive: false });
   }
 
-  closeModal() {
-    this.setState({ modalIsOpen: false });
+  closeInfoModal() {
+    this.setState({ infoModalIsOpen: false });
+    document.body.removeEventListener('touchmove', preventDefault, { passive: false });
+  }
+
+  openFaceModal() {
+    this.setState({ faceModalIsOpen: true });
+  }
+
+  afterOpenFaceModal() {
+    document.body.addEventListener('touchmove', preventDefault, { passive: false });
+  }
+
+  closeFaceModal() {
+    this.setState({ faceModalIsOpen: false });
     document.body.removeEventListener('touchmove', preventDefault, { passive: false });
   }
 
   reset() {
     this.gameRef.current.reset();
+  }
+
+  camera() {
+    this.openFaceModal();
+
+    // document.getElementById('custom-file-input').click();
+  }
+
+  handleFileChange(e) {
+    this.openFaceModal();
   }
 
   render() {
@@ -56,24 +85,34 @@ export default class Home extends React.Component {
         <div className="buttons">
           <div className="left-buttons">
             <button className="refresh" onClick={this.reset.bind(this)} />
-            <Link to="/camera">
-              <button className="camera" />
-            </Link>
+            <button className="camera" onClick={this.camera.bind(this)}/>
+            <input type="file" id="custom-file-input" accept="image/*;capture=camera" onChange={(e) => this.handleFileChange(e)}/>
             <button className="share"/>
           </div>
           <div className="right-buttons">
-            <button onClick={this.openModal} className="info" />
+            <button onClick={this.openInfoModal} className="info" />
           </div>
         </div>
         <Modal
-          isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeModal}
+          isOpen={this.state.infoModalIsOpen}
+          onAfterOpen={this.afterOpenInfoModal}
+          onRequestClose={this.closeInfoModal}
           overlayClassName="modal-overlay"
-          className="modal-content"
+          className="info-modal-content"
         >
           <Info />
-          <button className="close" onClick={this.closeModal} />
+          <button className="close" onClick={this.closeInfoModal} />
+        </Modal>
+
+        <Modal
+          isOpen={this.state.faceModalIsOpen}
+          onAfterOpen={this.afterOpenFaceModal}
+          onRequestClose={this.closeFaceModal}
+          overlayClassName="modal-overlay"
+          className="face-modal-content"
+        >
+          <Face closeModal={this.closeFaceModal.bind(this)} file={this.state.file}/>
+          <button className="close" onClick={this.closeFaceModal} />
         </Modal>
       </div>
     );

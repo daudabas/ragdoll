@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PinchToZoom from 'react-pinch-and-zoom';
 import mask from './images/face_mask.png';
+import overlay from './images/face_overlay@2x.png';
 import './index.css';
 import crypto from 'crypto';
+import { Link } from 'react-router-dom';
 
 import ImageHelper from './imageHelper';
 
@@ -26,12 +28,20 @@ export default class Face extends Component {
 
   componentDidMount() {
     document.body.classList.add('face');
-    document.body.addEventListener('touchmove', preventDefault, { passive: false });
+
+    this.setState({ file : this.props.file}, () => {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        this.img.current.src = reader.result;
+      }
+  
+      reader.readAsDataURL(this.state.file);
+    });
   }
 
   componentWillUnmount() {
     document.body.classList.remove('face');
-    document.body.removeEventListener('touchmove', preventDefault, { passive: false });
   } 
 
   createDownloadLink(dataURL) {
@@ -63,8 +73,14 @@ export default class Face extends Component {
       window.location.replace(`${window.location.origin}/home/${id}`);
     });
   }
-
+  
   handleClick() {
+    if (this.state.file === null) {
+      return;
+    }
+
+    document.getElementById('loader-overlay').style.display = "block";
+
     const maskImage = new Image();
     const image = new Image();
 
@@ -95,8 +111,8 @@ export default class Face extends Component {
         context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight);
         context.save();
 
-        const newWidth = 200;
-        const newHeight = 200;
+        const newWidth = 300;
+        const newHeight = 300;
         const translateX = -1 * (canvas.width / 2 - newWidth / 2);
         const translateY = -1 * (canvas.height / 2 - newHeight / 2);
         const croppedBase64Image = ImageHelper.cropImage(canvas, translateX, translateY, newWidth, newHeight);
@@ -121,24 +137,37 @@ export default class Face extends Component {
   render() {
     return (
       <div className="wrapper">
-        <div className="chooseFile">
-          <input type="file" accept="image/*;capture=camera" onChange={(e) => this.handleChange(e)}/>
+        <div id="loader-overlay">
+          <div className="loader"></div>
+        </div>
+        <div className="header">
+          <div className="face-header-left-div">
+            <button className="face-cancel-button" onClick={this.props.closeModal}/>
+          </div>
+          Make sure face is within the crop marks
         </div>
         <div className="stage">
-          <div className="userImage">
+          <div className="user-image">
             <PinchToZoom ref={this.pinchToZoom}>
               <img ref={this.img} />
             </PinchToZoom>
           </div>
           <div className="overlay" ref={this.overlayDiv}>
+            <img className="face-overlay-img" src={overlay} />
+          </div>
+          <div className="footer">
+          <div className="face-footer-left-buttons">
+            <label className="image-upload">
+              Retake
+              <input className="face-file-input" type="file" accept="image/*;capture=camera" onChange={(e) => this.handleChange(e)}/>
+            </label>
+          </div>
+          <div className="face-footer-right-buttons">
+            <button className="link-button" onClick={this.handleClick.bind(this)}>Use Photo</button>
           </div>
         </div>
-        <div>
-          <button onClick={this.handleClick.bind(this)}>Ok</button>
         </div>
-        <div>
-          <img ref={this.resultImg} />
-        </div>
+        
       </div>
     );
   }
