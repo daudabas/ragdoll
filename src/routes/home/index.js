@@ -20,6 +20,7 @@ export default class Home extends React.Component {
       faceModalIsOpen: false,
       id: null,
       headURL: null,
+      file: null,
     };
 
     this.openInfoModal = this.openInfoModal.bind(this);
@@ -69,13 +70,15 @@ export default class Home extends React.Component {
   }
 
   camera() {
-    this.openFaceModal();
+    // this.openFaceModal();
 
-    // document.getElementById('custom-file-input').click();
+    document.getElementById('custom-file-input').click();
   }
 
   handleFileChange(e) {
-    this.openFaceModal();
+    this.setState({ file: e.target.files[0]},() => {
+      this.openFaceModal();
+    });
   }
 
   render() {

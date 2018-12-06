@@ -7,25 +7,26 @@ body.face {
   overflow: hidden;
 }
 
-
-
 .stage {
   position: fixed;
   width: 100%;
   padding-top: 112%;
-  background-color: blue;
   top: 50%;
   transform: translateY(-50%);
 }
 
 .user-image {
-  background-color: grey;
   position: absolute;
 	top: 0;
   left: 0;
   height:100%;
   width: 100%;
   max-width: 100%;
+}
+
+.face-image {
+  object-fit: cover;
+  vertical-align: middle;
 }
 
 .overlay {

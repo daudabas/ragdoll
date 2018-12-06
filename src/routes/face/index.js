@@ -21,19 +21,21 @@ export default class Face extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.canvas = React.createRef();
     this.pinchToZoom = React.createRef();
-    this.img = React.createRef();
+    this.image = React.createRef();
     this.overlayDiv = React.createRef();
     this.resultImg = React.createRef();
   }
 
   componentDidMount() {
     document.body.classList.add('face');
-
     this.setState({ file : this.props.file}, () => {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        this.img.current.src = reader.result;
+        this.image.current.src = reader.result;
+        const stageElement = document.getElementById('stage');
+        this.image.current.width = stageElement.offsetWidth;
+        this.image.current.height = stageElement.offsetHeight;
       }
   
       reader.readAsDataURL(this.state.file);
@@ -102,17 +104,20 @@ export default class Face extends Component {
       })
 
       image.onload = () => {
-        const zoom = this.img.current.width / image.width;
+        const zoom = this.image.current.width / image.width;
         const sourceWidth = image.width * zoom * currentZoomFactor;
         const sourceHeight = image.height * zoom * currentZoomFactor;
-
-        context.drawImage(maskImage, 0, 0, canvas.width, canvas.height);
+        console.log(`mask height: ${maskImage.height}`);
+        console.log(`canvas height: ${canvas.height}`);
+        const maskTranslateX = -0.5 * ((maskImage.width / 2) - canvas.width);
+        const maskTranslateY = -0.5 * ((maskImage.height / 2) - canvas.height);
+        context.drawImage(maskImage, maskTranslateX, maskTranslateY, maskImage.width / 2, maskImage.height / 2);
         context.globalCompositeOperation = 'source-out';
         context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight);
         context.save();
 
-        const newWidth = 300;
-        const newHeight = 300;
+        const newWidth = 198;
+        const newHeight = 239;
         const translateX = -1 * (canvas.width / 2 - newWidth / 2);
         const translateY = -1 * (canvas.height / 2 - newHeight / 2);
         const croppedBase64Image = ImageHelper.cropImage(canvas, translateX, translateY, newWidth, newHeight);
@@ -127,7 +132,10 @@ export default class Face extends Component {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        this.img.current.src = reader.result;
+        this.image.current.src = reader.result;
+        const stageElement = document.getElementById('stage');
+        this.image.current.width = stageElement.offsetWidth;
+        this.image.current.height = stageElement.offsetHeight;
       }
   
       reader.readAsDataURL(this.state.file);
@@ -146,10 +154,10 @@ export default class Face extends Component {
           </div>
           Make sure face is within the crop marks
         </div>
-        <div className="stage">
+        <div id="stage" className="stage">
           <div className="user-image">
-            <PinchToZoom ref={this.pinchToZoom}>
-              <img ref={this.img} />
+            <PinchToZoom className="face-pinch-zoom" ref={this.pinchToZoom}>
+              <img className="face-image" ref={this.image} />
             </PinchToZoom>
           </div>
           <div className="overlay" ref={this.overlayDiv}>
