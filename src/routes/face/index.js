@@ -89,6 +89,7 @@ export default class Face extends Component {
     const {currentTranslate, currentZoomFactor } = this.pinchToZoom.current.getTransform()
     const sourceX = currentTranslate.x * currentZoomFactor;
     const sourceY = currentTranslate.y * currentZoomFactor;
+    const maskVerticalRatio = 0.03794
 
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
@@ -107,19 +108,18 @@ export default class Face extends Component {
         const zoom = this.image.current.width / image.width;
         const sourceWidth = image.width * zoom * currentZoomFactor;
         const sourceHeight = image.height * zoom * currentZoomFactor;
-        console.log(`mask height: ${maskImage.height}`);
-        console.log(`canvas height: ${canvas.height}`);
         const maskTranslateX = -0.5 * ((maskImage.width / 2) - canvas.width);
         const maskTranslateY = -0.5 * ((maskImage.height / 2) - canvas.height);
+        const offset = maskVerticalRatio * maskImage.height * 2;
         context.drawImage(maskImage, maskTranslateX, maskTranslateY, maskImage.width / 2, maskImage.height / 2);
         context.globalCompositeOperation = 'source-out';
-        context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight);
+        context.drawImage(image, sourceX, sourceY - offset, sourceWidth, sourceHeight);
         context.save();
 
-        const newWidth = 198;
-        const newHeight = 239;
+        const newWidth = 217;
+        const newHeight = 260;
         const translateX = -1 * (canvas.width / 2 - newWidth / 2);
-        const translateY = -1 * (canvas.height / 2 - newHeight / 2);
+        const translateY = -1 * (canvas.height / 2 - newHeight / 2) + (maskVerticalRatio * maskImage.height / 2);
         const croppedBase64Image = ImageHelper.cropImage(canvas, translateX, translateY, newWidth, newHeight);
         
         this.uploadImage(croppedBase64Image);

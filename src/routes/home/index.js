@@ -75,6 +75,14 @@ export default class Home extends React.Component {
     document.getElementById('custom-file-input').click();
   }
 
+  share() {
+    if (navigator.share) {
+
+    } else {
+
+    }
+  }
+
   handleFileChange(e) {
     this.setState({ file: e.target.files[0]},() => {
       this.openFaceModal();
@@ -90,7 +98,7 @@ export default class Home extends React.Component {
             <button className="refresh" onClick={this.reset.bind(this)} />
             <button className="camera" onClick={this.camera.bind(this)}/>
             <input type="file" id="custom-file-input" accept="image/*;capture=camera" onChange={(e) => this.handleFileChange(e)}/>
-            <button className="share"/>
+            {/* <button className="share" onClick={this.share.bind(this)}/> */}
           </div>
           <div className="right-buttons">
             <button onClick={this.openInfoModal} className="info" />

@@ -49,8 +49,8 @@ body.face {
 
 .face-overlay-img {
   position: absolute;
-  height: 239px;
-  width: 198px;
+  height: 565px;
+  width: 428px;
   top: 50%;
   transform: translate(-50%, -50%);
 }
