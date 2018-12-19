@@ -6,6 +6,7 @@ export default class Card extends Component {
     return (
       <div className="carousel-slide">
         <div className="carousel-card">
+        <div className="card-container">
           <div className="card-image">
             <img alt="instruction" src={this.props.image} />
           </div>
@@ -15,6 +16,7 @@ export default class Card extends Component {
           <div className="card-body">
             <text>{this.props.body}</text>
           </div>
+        </div>
         </div>
       </div>
     );

@@ -97,27 +97,17 @@ export default class Face extends Component {
     image.onload = () => {
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
-
-      // const maskVerticalRatio = 0.03794;
-
       const {currentTranslate, currentZoomFactor } = this.pinchToZoom.current.getTransform();
-      let zoom, sourceX, sourceY, sourceWidth, sourceHeight;
+      let sourceX, sourceY, sourceWidth, sourceHeight;
+      const imageWidth = this.faceImage.current.width;
+      const imageHeight = this.faceImage.current.height;
 
-      if (ImageHelper.isLandscape(image)) {
-        canvas.width = this.faceImage.current.width + 140;
-        canvas.height = this.faceImage.current.height;
-        sourceWidth = this.faceImage.current.width * currentZoomFactor;
-        sourceHeight = this.faceImage.current.height * currentZoomFactor;
-        sourceX = currentTranslate.x * currentZoomFactor + 65;
-        sourceY = currentTranslate.y * currentZoomFactor;
-      } else {
-        canvas.width = this.faceImage.current.width;
-        canvas.height = this.faceImage.current.height + 130;
-        sourceWidth = this.faceImage.current.width * currentZoomFactor;
-        sourceHeight = this.faceImage.current.height * currentZoomFactor;
-        sourceX = currentTranslate.x * currentZoomFactor;
-        sourceY = currentTranslate.y * currentZoomFactor + 65;
-      }
+      canvas.width = imageWidth;
+      canvas.height = imageHeight + 130;
+      sourceWidth = imageWidth * currentZoomFactor;
+      sourceHeight = imageHeight * currentZoomFactor;
+      sourceX = currentTranslate.x * currentZoomFactor;
+      sourceY = currentTranslate.y * currentZoomFactor + 65;
 
       const actualMaskImageWidth = maskImage.width / 2;
       const actualMaskImageHeight = maskImage.height / 2;
@@ -184,7 +174,7 @@ export default class Face extends Component {
             <div className="face-footer-left-buttons">
               <label className="image-upload">
                 Retake
-                <input className="face-file-input" type="file" accept="image/*;capture=camera" onChange={(e) => this.handleChange(e)}/>
+                <input className="face-file-input" type="file" accept="image/*" onChange={(e) => this.handleChange(e)}/>
               </label>
             </div>
             <div className="face-footer-right-buttons">

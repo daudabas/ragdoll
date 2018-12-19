@@ -163,8 +163,8 @@ const ragdoll = (headURL, x, y, sc, options) => {
       },
     },
   });
-
-  const head = Bodies.rectangle((x - 5) * scale, (y - 130) * scale, 152 * scale, 163 * scale, headOptions);
+  const headOffset = (headURL) ? 20 : 0;
+  const head = Bodies.rectangle((x - 5) * scale, (y - 130 + headOffset) * scale, 152 * scale, 163 * scale, headOptions);
   const chest = Bodies.rectangle(x * scale, y * scale, 98 * scale, 105 * scale, chestOptions);
   const rightUpperArm = Bodies.rectangle((x + 45) * scale, (y - 20) * scale, 17 * scale, 40 * scale, rightArmOptions);
   const leftUpperArm = Bodies.rectangle((x - 45) * scale, (y - 20) * scale, 17 * scale, 40 * scale, leftArmOptions);
@@ -179,7 +179,7 @@ const ragdoll = (headURL, x, y, sc, options) => {
     bodyA: head,
     pointA: {
       x: -5 * scale,
-      y: 90 * scale,
+      y: (90 - headOffset) * scale,
     },
     pointB: {
       x: -10 * scale,
@@ -196,7 +196,7 @@ const ragdoll = (headURL, x, y, sc, options) => {
     bodyA: head,
     pointA: {
       x: 15 * scale,
-      y: 90 * scale,
+      y: (90 - headOffset) * scale,
     },
     pointB: {
       x: 10 * scale,

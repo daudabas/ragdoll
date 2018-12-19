@@ -39,7 +39,7 @@ export default class Decorator extends Component {
     return {
       position: 'relative',
       margin: 0,
-      top: -10,
+      top: -20,
       padding: 0
     }
   }

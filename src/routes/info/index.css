@@ -9,21 +9,28 @@ body.info {
 
 .carousel-slide {
   height: 450px;
+  margin-top: 5vh;
 }
 
 .carousel-card {
   height: 380px;
   margin: 20px;
+  text-align: center;
+}
+div.card-container {
+  display: inline-block;
 }
 
 div.card-image {
   margin: 0;
   padding: 0;
+  width: 327px;
 }
 
 div.card-title {
   margin-top: -3px;
   height: 10px;
+  width: 307px;
   padding: 10px;
   background-color: white;
   text-align: center;
@@ -33,6 +40,7 @@ div.card-title {
 
 div.card-body {
   height: 65px;
+  width: 307px;
   padding: 10px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;

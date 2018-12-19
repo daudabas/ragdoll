@@ -4,7 +4,8 @@ html {
 
 body.landing {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: url('./images/background.png') no-repeat center bottom; 
+  background: url('./images/background.png') no-repeat bottom;
+  background-size: 100% auto;
 }
 
 body.greetings {
@@ -15,7 +16,8 @@ div.greetings-logo {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 50%;
+  width: 40%;
+  max-width: 200px;
   text-align: center;
   /* padding: 5% */
 }
@@ -36,7 +38,7 @@ div.greetings-group {
 }
 
 div.greetings-createdby {
-  padding: 5%;
+  padding: 3%;
   font-size: 12pt;
   text-align: center;
   color: white;
@@ -46,19 +48,27 @@ div.greetings-textbody {
   margin-top: 10px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  max-width: 350px;
   padding-top: 5px;
   padding-bottom: 20px;
+  padding-right: 5px;
+  padding-left: 5px;
   font-size: 12pt;
   color: black;
   background: url('./images/chatbox@2x.png') no-repeat bottom;
   background-size: cover;
   text-align: center;
+  position: fixed;
+  bottom: 30vh;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, 0);
 }
 div.greetings-elves {
   height: 21vh;
   text-align: center;
   position: fixed;
-  bottom: 40px;
+  bottom: 7vh;
   left: 50%;
   width: 100%;
   transform: translate(-50%, 0);
