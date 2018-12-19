@@ -3,7 +3,6 @@ import Game from './game';
 import Modal from 'react-modal';
 import Info from '../info';
 import Face from '../face';
-import { Link } from 'react-router-dom';
 
 Modal.setAppElement('#root');
 

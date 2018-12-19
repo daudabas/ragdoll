@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import PinchToZoom from 'react-pinch-and-zoom';
 import mask from './images/face_mask.png';
 import overlay from './images/face_overlay@2x.png';
+import hatHair from './images/hat_hair@2x.png';
 import './index.css';
 import crypto from 'crypto';
-import { Link } from 'react-router-dom';
 
 import ImageHelper from './imageHelper';
-
-function preventDefault(e){
-  e.preventDefault();
-}
 
 export default class Face extends Component {
   constructor(props) {
@@ -21,7 +17,7 @@ export default class Face extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.canvas = React.createRef();
     this.pinchToZoom = React.createRef();
-    this.image = React.createRef();
+    this.faceImage = React.createRef();
     this.overlayDiv = React.createRef();
     this.resultImg = React.createRef();
   }
@@ -32,10 +28,10 @@ export default class Face extends Component {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        this.image.current.src = reader.result;
+        this.faceImage.current.src = reader.result;
         const stageElement = document.getElementById('stage');
-        this.image.current.width = stageElement.offsetWidth;
-        this.image.current.height = stageElement.offsetHeight;
+        this.faceImage.current.width = stageElement.offsetWidth;
+        this.faceImage.current.height = stageElement.offsetHeight;
       }
   
       reader.readAsDataURL(this.state.file);
@@ -84,46 +80,69 @@ export default class Face extends Component {
     document.getElementById('loader-overlay').style.display = "block";
 
     const maskImage = new Image();
+    const hatHairImage = new Image();
     const image = new Image();
 
-    const {currentTranslate, currentZoomFactor } = this.pinchToZoom.current.getTransform()
-    const sourceX = currentTranslate.x * currentZoomFactor;
-    const sourceY = currentTranslate.y * currentZoomFactor;
-    const maskVerticalRatio = 0.03794
-
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-
-    canvas.width = this.overlayDiv.current.offsetWidth;
-    canvas.height = this.overlayDiv.current.offsetHeight;
-
-    maskImage.src = `${window.location.origin}${mask}`;
+    hatHairImage.src = `${window.location.origin}${hatHair}`;
+    hatHairImage.onload = () => {
+      maskImage.src = `${window.location.origin}${mask}`;
+    }
 
     maskImage.onload = () => {
       ImageHelper.rotateImage(this.state.file, (base64Image) => {
         image.src = base64Image;
       })
+    }
 
-      image.onload = () => {
-        const zoom = this.image.current.width / image.width;
-        const sourceWidth = image.width * zoom * currentZoomFactor;
-        const sourceHeight = image.height * zoom * currentZoomFactor;
-        const maskTranslateX = -0.5 * ((maskImage.width / 2) - canvas.width);
-        const maskTranslateY = -0.5 * ((maskImage.height / 2) - canvas.height);
-        const offset = maskVerticalRatio * maskImage.height * 2;
-        context.drawImage(maskImage, maskTranslateX, maskTranslateY, maskImage.width / 2, maskImage.height / 2);
-        context.globalCompositeOperation = 'source-out';
-        context.drawImage(image, sourceX, sourceY - offset, sourceWidth, sourceHeight);
-        context.save();
+    image.onload = () => {
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
 
-        const newWidth = 217;
-        const newHeight = 260;
-        const translateX = -1 * (canvas.width / 2 - newWidth / 2);
-        const translateY = -1 * (canvas.height / 2 - newHeight / 2) + (maskVerticalRatio * maskImage.height / 2);
-        const croppedBase64Image = ImageHelper.cropImage(canvas, translateX, translateY, newWidth, newHeight);
-        
-        this.uploadImage(croppedBase64Image);
+      // const maskVerticalRatio = 0.03794;
+
+      const {currentTranslate, currentZoomFactor } = this.pinchToZoom.current.getTransform();
+      let zoom, sourceX, sourceY, sourceWidth, sourceHeight;
+
+      if (ImageHelper.isLandscape(image)) {
+        canvas.width = this.faceImage.current.width + 140;
+        canvas.height = this.faceImage.current.height;
+        sourceWidth = this.faceImage.current.width * currentZoomFactor;
+        sourceHeight = this.faceImage.current.height * currentZoomFactor;
+        sourceX = currentTranslate.x * currentZoomFactor + 65;
+        sourceY = currentTranslate.y * currentZoomFactor;
+      } else {
+        canvas.width = this.faceImage.current.width;
+        canvas.height = this.faceImage.current.height + 130;
+        sourceWidth = this.faceImage.current.width * currentZoomFactor;
+        sourceHeight = this.faceImage.current.height * currentZoomFactor;
+        sourceX = currentTranslate.x * currentZoomFactor;
+        sourceY = currentTranslate.y * currentZoomFactor + 65;
       }
+
+      const actualMaskImageWidth = maskImage.width / 2;
+      const actualMaskImageHeight = maskImage.height / 2;
+      const maskTranslateX = -0.5 * (actualMaskImageWidth - canvas.width);
+      const maskTranslateY = -0.5 * (actualMaskImageHeight - canvas.height);
+
+      context.drawImage(maskImage, maskTranslateX, maskTranslateY, actualMaskImageWidth, actualMaskImageHeight);
+      context.globalCompositeOperation = 'source-out';
+      context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight);
+      context.globalCompositeOperation = 'source-over';
+
+      const hatHairTranslateX = -0.5 * ((hatHairImage.width) - canvas.width);
+      const hatHairTranslateY = -0.5 * ((hatHairImage.height) - canvas.height);
+      const hatHairOffset = 0.6 * hatHairImage.height;
+      context.drawImage(hatHairImage, hatHairTranslateX, hatHairTranslateY - hatHairOffset, hatHairImage.width, hatHairImage.height);
+      context.save();
+
+      const newWidth = 304;
+      // const newHeight = 470;
+      const newHeight = 520;
+      const translateX = -0.5 * (canvas.width - newWidth);
+      const translateY = -0.5 * (canvas.height - newHeight);
+      const croppedBase64Image = ImageHelper.cropImage(canvas, translateX, translateY, newWidth, newHeight);
+
+      this.uploadImage(croppedBase64Image);
     }
   }
 
@@ -132,10 +151,7 @@ export default class Face extends Component {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        this.image.current.src = reader.result;
-        const stageElement = document.getElementById('stage');
-        this.image.current.width = stageElement.offsetWidth;
-        this.image.current.height = stageElement.offsetHeight;
+        this.faceImage.current.src = reader.result;
       }
   
       reader.readAsDataURL(this.state.file);
@@ -157,22 +173,23 @@ export default class Face extends Component {
         <div id="stage" className="stage">
           <div className="user-image">
             <PinchToZoom className="face-pinch-zoom" ref={this.pinchToZoom}>
-              <img className="face-image" ref={this.image} />
+              <img alt="face" className="face-image" ref={this.faceImage} />
             </PinchToZoom>
           </div>
           <div className="overlay" ref={this.overlayDiv}>
-            <img className="face-overlay-img" src={overlay} />
+            <img alt="overlay" className="face-overlay-img" src={overlay} />
+            <img alt="hat" className="hat-hair-img" src={hatHair} />
           </div>
           <div className="footer">
-          <div className="face-footer-left-buttons">
-            <label className="image-upload">
-              Retake
-              <input className="face-file-input" type="file" accept="image/*;capture=camera" onChange={(e) => this.handleChange(e)}/>
-            </label>
-          </div>
-          <div className="face-footer-right-buttons">
-            <button className="link-button" onClick={this.handleClick.bind(this)}>Use Photo</button>
-          </div>
+            <div className="face-footer-left-buttons">
+              <label className="image-upload">
+                Retake
+                <input className="face-file-input" type="file" accept="image/*;capture=camera" onChange={(e) => this.handleChange(e)}/>
+              </label>
+            </div>
+            <div className="face-footer-right-buttons">
+              <button className="link-button" onClick={this.handleClick.bind(this)}>Use Photo</button>
+            </div>
         </div>
         </div>
         

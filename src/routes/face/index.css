@@ -43,7 +43,6 @@ body.face {
   bottom: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
   pointer-events: none;
 }
 
@@ -53,6 +52,13 @@ body.face {
   width: 428px;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+
+.hat-hair-img {
+  position: absolute;
+  height: 232px;
+  width: 304px;
+  transform: translate(-50%, -20%);
 }
 
 .button {
@@ -111,10 +117,13 @@ body.face {
 }
 
 .header {
-  height: 54px;
+  position: relative;
+  height: 48px;
   color: white;
   font-size: 10pt;
   padding-top: 27px;
+  background-color: black;
+  z-index: 3;
 }
 
 .face-header-left-div {
@@ -149,7 +158,7 @@ body.face {
   height: 60px;
   animation: spin 2s linear infinite;
   position: fixed;
-  z-index: 999;
+  z-index: 10;
   height: 2em;
   width: 2em;
   overflow: show;

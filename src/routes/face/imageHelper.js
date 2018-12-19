@@ -3,7 +3,7 @@ const getOrientation = (file, callback) => {
   reader.onload = function(e) {
 
       var view = new DataView(e.target.result);
-      if (view.getUint16(0, false) != 0xFFD8)
+      if (view.getUint16(0, false) !== 0xFFD8)
       {
           return callback(-2);
       }
@@ -13,26 +13,26 @@ const getOrientation = (file, callback) => {
           if (view.getUint16(offset+2, false) <= 8) return callback(-1);
           var marker = view.getUint16(offset, false);
           offset += 2;
-          if (marker == 0xFFE1) 
+          if (marker === 0xFFE1) 
           {
-              if (view.getUint32(offset += 2, false) != 0x45786966) 
+              if (view.getUint32(offset += 2, false) !== 0x45786966) 
               {
                   return callback(-1);
               }
 
-              var little = view.getUint16(offset += 6, false) == 0x4949;
+              var little = view.getUint16(offset += 6, false) === 0x4949;
               offset += view.getUint32(offset + 4, little);
               var tags = view.getUint16(offset, little);
               offset += 2;
               for (var i = 0; i < tags; i++)
               {
-                  if (view.getUint16(offset + (i * 12), little) == 0x0112)
+                  if (view.getUint16(offset + (i * 12), little) === 0x0112)
                   {
                       return callback(view.getUint16(offset + (i * 12) + 8, little));
                   }
               }
           }
-          else if ((marker & 0xFF00) != 0xFF00)
+          else if ((marker & 0xFF00) !== 0xFF00)
           {
               break;
           }
@@ -46,11 +46,21 @@ const getOrientation = (file, callback) => {
   reader.readAsArrayBuffer(file);
 }
 
+const isLandscape = (image) => {
+  return (image.width > image.height);
+}
+
+const getRatio = (firstImage, secondImage) => {
+  const firstLength = Math.sqrt((Math.pow(firstImage.width, 2) + Math.pow(firstImage.height, 2)));
+  const secondLength = Math.sqrt((Math.pow(secondImage.width, 2) + Math.pow(secondImage.height, 2)));
+
+  return firstLength / secondLength;
+}
+
 const rotateBase64Image = (base64Image, orientation, callback) => {
   if (orientation === -1) {
     return callback(base64Image);
   }
-
   var canvas = document.createElement('canvas');
   var context = canvas.getContext('2d');
 
@@ -129,4 +139,6 @@ module.exports = {
   createFile,
   rotateImage,
   cropImage,
+  isLandscape,
+  getRatio,
 }

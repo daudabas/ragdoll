@@ -7,7 +7,7 @@ export default class Card extends Component {
       <div className="carousel-slide">
         <div className="carousel-card">
           <div className="card-image">
-            <img src={this.props.image} />
+            <img alt="instruction" src={this.props.image} />
           </div>
           <div className="card-title">
             <text>{this.props.title}</text>
