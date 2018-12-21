@@ -17,11 +17,12 @@ const {
 } = Matter;
 
 export default class ElfWorld {
-  constructor(headURL, maxSnowflakes) {
+  constructor(headURL, maxSnowflakes, headTappedCallback) {
     this.snowflakes = [];
     this.headURL = headURL;
     this.ragdoll = null;
     this.maxSnowflakes = maxSnowflakes || 500;
+    this.headTappedCallback = headTappedCallback;
 
     this.createEngine();
     this.createRender();
@@ -81,23 +82,41 @@ export default class ElfWorld {
     World.add(this.engine.world, [this.ground,this.leftWall, this.rightWall, this.ceiling, this.ragdoll]);
   }
 
+  addSnow() {
+    if (this.snowflakes.length < this.maxSnowflakes) {
+      for (let i = 0; i < 10; i += 1) {
+        const random = Math.random();
+        const x = (random * 1000) % this.render.canvas.width;
+        const y = ((random * 1000) % 100) + 10;
+        const snowFlake = Snowflake(x, y, 2);
+        this.snowflakes.push(snowFlake);
+        World.add(this.engine.world, snowFlake);
+      }
+    }
+  }
+
   loadEvents() {
     this.isDragging = false;
+    this.isHeadTapped = false;
 
     Events.on(this.mouseConstraint, 'mouseup', () => {
-      if (this.isDragging === false) {
-        if (this.snowflakes.length < this.maxSnowflakes) {
-          for (let i = 0; i < 10; i += 1) {
-            const random = Math.random();
-            const x = (random * 1000) % this.render.canvas.width;
-            const y = ((random * 1000) % 100) + 10;
-            const snowFlake = Snowflake(x, y, 2);
-            this.snowflakes.push(snowFlake);
-            World.add(this.engine.world, snowFlake);
-          }
-        }
+      if (this.isDragging === false && this.isHeadTapped === false) {
+        this.addSnow();
+      } else if (this.isHeadTapped === true) {
+        this.headTappedCallback();
+        this.isHeadTapped = false;
       } else {
         this.isDragging = false;
+      }
+    });
+
+    Events.on(this.mouseConstraint, 'mousedown', () => {
+      const { body } = this.mouseConstraint;
+      if (body !== null && body.label === 'head') {
+        this.isHeadTapped = true;
+        this.isDragging = false;
+      } else {
+        this.isHeadTapped = false;
       }
     });
 

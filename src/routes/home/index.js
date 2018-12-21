@@ -3,12 +3,31 @@ import Game from './game';
 import Modal from 'react-modal';
 import Info from '../info';
 import Face from '../face';
+import audioFile from './sounds/audio.mp3';
 
 Modal.setAppElement('#root');
 
 function preventDefault(e){
   e.preventDefault();
 }
+
+const messages = [
+'Wishing you a magical and blissful holiday! Have a merry Christmas and prosperous New Year!',
+'May this Christmas season bring you nothing but fond memories, happiness and laughter!',
+'Wish you all the best this holiday season and throughout the year, Merry Christmas!',
+'May this festive season sparkle and shine, may all of your wishes and dreams come true, and may you feel this happiness all year round. Merry Christmas!',
+'May your heart and home be filled with all of the joys the festive season brings. Merry Christmas and a wonderful New Year!',
+'Warmest greetings of this festive season and best wishes for Happiness in the New Year!',
+'Warmest thoughts and best wishes for a wonderful Christmas and a Happy New Year!',
+'Wishing you a joyous Christmas and a happy and prosperous New Year.',
+'May the good times and treasures of the present become the golden memories of tomorrow. Wish you lots of love, joy, and happiness. Merry Christmas!',
+'Wishing you a very Merry Christmas and a wonderful New Year.',
+'Best wishes for the Holidays, and for health and happiness throughout the coming year.',
+'Merry Christmas! With many good wishes for the holiday season and the coming year.',
+'Christmas liao leh! Where\'s my present? Kidding lah. Merry Christmas!',
+'Happy Holidays and best wishes for the New Year!',
+'All I want for Christmas is ang pow. Eh? Wait... Paiseh... Wrong greeting. Merry Christmas!',
+];
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -20,6 +39,8 @@ export default class Home extends React.Component {
       id: null,
       headURL: null,
       file: null,
+      messageIndex: 0,
+      message: messages[0],
     };
 
     this.openInfoModal = this.openInfoModal.bind(this);
@@ -35,7 +56,15 @@ export default class Home extends React.Component {
       const { id } = this.props.match.params;
       if (typeof id !== 'undefined') {
         this.setState({ id, headURL: `https://2359elf-faces.s3.ap-southeast-1.amazonaws.com/faces/${id}.jpg` });
-      } 
+
+        let visited = localStorage['alreadyVisited'];
+        if (!visited) {
+          localStorage['alreadyVisited'] = true;
+          window.location.replace(`${window.location.origin}/landing/${id}`);
+        }
+      } else {
+        localStorage['alreadyVisited'] = true;
+      }
   }
 
   openInfoModal() {
@@ -69,16 +98,18 @@ export default class Home extends React.Component {
   }
 
   camera() {
-    // this.openFaceModal();
-
     document.getElementById('custom-file-input').click();
   }
 
-  share() {
-    if (navigator.share) {
+  showGreetings() {
+    const displayStyle = document.getElementById('greeting-message-div').style.display;
 
-    } else {
-
+    if (displayStyle === '') {
+      let newIndex = Math.floor(((Math.random() * 100) % messages.length));
+      this.setState({ messageIndex: newIndex, message: messages[newIndex] });
+      document.getElementById('greeting-message-div').style.display = 'block';
+    } else {      
+        document.getElementById('greeting-message-div').style.display = '';
     }
   }
 
@@ -91,7 +122,8 @@ export default class Home extends React.Component {
   render() {
     return (
       <div>
-        <Game ref={this.gameRef} headURL={this.state.headURL} />
+        <audio src={audioFile} autoPlay/>
+        <Game ref={this.gameRef} headURL={this.state.headURL} headCallback={this.showGreetings.bind(this)}/>
         <div className="buttons">
           <div className="left-buttons">
             <button className="refresh" onClick={this.reset.bind(this)} />
@@ -102,6 +134,9 @@ export default class Home extends React.Component {
           <div className="right-buttons">
             <button onClick={this.openInfoModal} className="info" />
           </div>
+        </div>
+        <div id="greeting-message-div" className="greeting-message">
+          <p>{this.state.message}</p>
         </div>
         <Modal
           isOpen={this.state.infoModalIsOpen}

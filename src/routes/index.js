@@ -10,6 +10,8 @@ export default () => (
   <BrowserRouter>
     <Switch>
       <Route path="/" exact component={Landing} />
+      <Route path="/landing" exact component={Landing} />
+      <Route path="/landing/:id" exact component={Landing} />
       <Route path="/home" exact component={Home} />
       <Route path="/home/:id" exact component={Home} />
       <Route path="/camera" exact component={Face} />

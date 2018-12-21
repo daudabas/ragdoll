@@ -25,7 +25,7 @@ const ragdoll = (headURL, x, y, sc, options) => {
     label: 'head',
     mass: 0.1,
     collisionFilter: {
-      group: Body.nextGroup(true),
+      group: Body.nextGroup(false),
     },
     chamfer: {
       radius: [75 * scale, 75 * scale, 75 * scale, 75 * scale],
@@ -72,6 +72,7 @@ const ragdoll = (headURL, x, y, sc, options) => {
   }, options);
 
   const leftLowerArmOptions = Common.extend({
+    mass: 10,
     chamfer: {
       radius: 10 * scale,
     },
@@ -103,6 +104,7 @@ const ragdoll = (headURL, x, y, sc, options) => {
   }, options);
 
   const rightLowerArmOptions = Common.extend({
+    mass: 10,
     chamfer: {
       radius: 10 * scale,
     },
@@ -216,7 +218,7 @@ const ragdoll = (headURL, x, y, sc, options) => {
       y: -30 * scale,
     },
     pointB: {
-      x: 0 * scale,
+      x: -0 * scale,
       y: -10 * scale,
     },
     bodyB: rightUpperArm,

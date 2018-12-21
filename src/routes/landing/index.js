@@ -9,6 +9,19 @@ function preventDefault(e){
 }
 
 export default class Landing extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      link: 'home'
+    };
+  }
+
+  componentWillMount() {
+    const { id } = this.props.match.params;
+    if (typeof id !== 'undefined') {
+      this.setState({ link: `/home/${id}` });
+    }
+  }
 
   componentDidMount() {
     document.body.classList.add('landing');
@@ -36,7 +49,7 @@ export default class Landing extends React.Component {
           We hope your holidays will be filled with joy and laughter through the New Year.
           </p>
           <p>
-          <Link to="/home">
+          <Link to={this.state.link}>
             <button className="button">START</button>
           </Link>
           </p>
