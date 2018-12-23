@@ -30,12 +30,6 @@ body.face {
 }
 
 .overlay {
-  /* background-color: blue; */
-  /* background: url('./images/face_overlay@2x.png') center no-repeat; */
-  /* -webkit-background-size: contain;
-  -moz-background-size: contain;
-  -o-background-size: contain;
-  background-size: contain; */
   position: absolute;
   top: 0;
   left: 0;

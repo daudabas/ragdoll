@@ -71,21 +71,21 @@ const rotateBase64Image = (base64Image, orientation, callback) => {
     canvas.width = image.width;
     switch (orientation) {
       case 1:
-        canvas.height = image.height;
-        canvas.width = image.width;
         break;
       case 3:
-        canvas.height = image.height;
-        canvas.width = image.width;
-        context.rotate(180 * Math.PI / 180);
+        context.rotate(Math.PI);
         context.translate(-canvas.width, -canvas.height);
         break
       case 6:
         canvas.height = image.width;
         canvas.width = image.height;
-        context.rotate(90 * Math.PI / 180);
+        context.rotate(Math.PI / 2);
         context.translate(0, -canvas.width);
         break
+      case 8:
+        context.translate(canvas.width * 0.112, canvas.height);
+        context.rotate(3 * Math.PI / 2);
+        break;
       default:
         canvas.height = image.height;
         canvas.width = image.width;

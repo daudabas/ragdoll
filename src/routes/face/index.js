@@ -12,7 +12,7 @@ export default class Face extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      file: null
+      image: null
     }
     this.handleChange = this.handleChange.bind(this);
     this.canvas = React.createRef();
@@ -22,35 +22,26 @@ export default class Face extends Component {
     this.resultImg = React.createRef();
   }
 
-  componentDidMount() {
-    document.body.classList.add('face');
-    this.setState({ file : this.props.file}, () => {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        this.faceImage.current.src = reader.result;
+  setCapturedImage(file) {
+    this.showLoader();
+    ImageHelper.rotateImage(file, (base64Image) => {
+      this.setState({ image: base64Image }, () => {
+        this.faceImage.current.src = this.state.image;
         const stageElement = document.getElementById('stage');
         this.faceImage.current.width = stageElement.offsetWidth;
         this.faceImage.current.height = stageElement.offsetHeight;
-      }
-  
-      reader.readAsDataURL(this.state.file);
+        this.hideLoader();
+      });
     });
+  }
+
+  componentDidMount() {
+    document.body.classList.add('face');
+    this.setCapturedImage(this.props.file);
   }
 
   componentWillUnmount() {
     document.body.classList.remove('face');
-  } 
-
-  createDownloadLink(dataURL) {
-    const blob = ImageHelper.createFile(dataURL);
-    var blobUrl = URL.createObjectURL(blob);
-    
-    var link = document.createElement("a"); // Or maybe get it from the current document
-    link.href = blobUrl;
-    link.download = "aDefaultFileName.png";
-    link.click();
-    URL.revokeObjectURL(blobUrl);
   }
 
   uploadImage(base64Image) {
@@ -71,13 +62,21 @@ export default class Face extends Component {
       window.location.replace(`${window.location.origin}/home/${id}`);
     });
   }
+
+  showLoader() {
+    document.getElementById('loader-overlay').style.display = 'block';
+  }
+
+  hideLoader() {
+    document.getElementById('loader-overlay').style.display = 'none';
+  }
   
   handleClick() {
-    if (this.state.file === null) {
+    if (this.state.image === null) {
       return;
     }
 
-    document.getElementById('loader-overlay').style.display = "block";
+    this.showLoader();
 
     const maskImage = new Image();
     const hatHairImage = new Image();
@@ -89,9 +88,7 @@ export default class Face extends Component {
     }
 
     maskImage.onload = () => {
-      ImageHelper.rotateImage(this.state.file, (base64Image) => {
-        image.src = base64Image;
-      })
+      image.src = this.state.image;
     }
 
     image.onload = () => {
@@ -137,15 +134,7 @@ export default class Face extends Component {
   }
 
   handleChange(event) {
-    this.setState({ file : event.target.files[0]}, () => {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        this.faceImage.current.src = reader.result;
-      }
-  
-      reader.readAsDataURL(this.state.file);
-    });
+    this.setCapturedImage(event.target.files[0]);
   }
   
   render() {
