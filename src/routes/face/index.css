@@ -139,10 +139,12 @@ body.face {
 }
 
 .link-button {
+  background-color: black;
   border: none;
   font-size: 13pt;
   color: white;
   padding-top: 12px;
+  margin-right: 10px;
 }
 
 #loader-overlay {
