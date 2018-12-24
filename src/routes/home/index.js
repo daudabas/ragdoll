@@ -3,7 +3,7 @@ import Game from './game';
 import Modal from 'react-modal';
 import Info from '../info';
 import Face from '../face';
-// import audioFile from './sounds/audio.mp3';
+import audioFile from './sounds/audio_file.wav';
 
 Modal.setAppElement('#root');
 
@@ -33,6 +33,7 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.gameRef = React.createRef();
+    this.audioRef = React.createRef();
     this.state = {
       infoModalIsOpen: false,
       faceModalIsOpen: false,
@@ -67,6 +68,19 @@ export default class Home extends React.Component {
       }
   }
 
+  playMusic() {
+    this.audioRef.current.src = audioFile;
+    this.audioRef.current.load();
+    this.audioRef.current.currentTime = 0;
+    this.audioRef.current.play().catch((e) => {
+      console.log(e.message);
+    });
+  }
+  
+  componentDidMount() {
+    this.playMusic();
+  }
+
   openInfoModal() {
     this.setState({ infoModalIsOpen: true });
   }
@@ -95,6 +109,7 @@ export default class Home extends React.Component {
 
   reset() {
     this.gameRef.current.reset();
+    this.playMusic();
   }
 
   camera() {
@@ -122,7 +137,7 @@ export default class Home extends React.Component {
   render() {
     return (
       <div>
-        {/* <audio src={audioFile} autoPlay/> */}
+        <audio ref={this.audioRef} />
         <Game ref={this.gameRef} headURL={this.state.headURL} headCallback={this.showGreetings.bind(this)}/>
         <div className="buttons">
           <div className="left-buttons">
